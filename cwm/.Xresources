@@ -1,0 +1,14 @@
+xterm*dynamicColors:	true
+xterm*background:	    #202020
+xterm*foreground:	    #a0a0a0
+xterm*saveLines: 	    35000
+xterm*faceName:		    SauceCodeProNerdFont
+xterm*faceSize:		    14
+xterm*selectToClipboard: true
+
+;urxvt*dynamicColors:	true
+;urxvt*background:	black
+;urxvt*foreground:	grey
+;urxvt*saveLines: 	35000
+;urxvt*faceName:		SauceCodeProNerdFont
+;urxvt*faceSize:		14

@@ -1,0 +1,5 @@
+startx
+picom
+cwm
+feh
+tint2
