@@ -78,7 +78,7 @@ def install_file(source, target, is_link=False):
 
     try:
         if is_link:
-            src.symlink_to(tgt)
+            tgt.symlink_to(src)
             print("linked {} to {}".format(source, target))
         else:
             copyfile(src, tgt)
