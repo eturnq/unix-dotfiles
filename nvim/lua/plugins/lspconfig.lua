@@ -19,6 +19,10 @@ return {
 			lspconfig.pyright.setup{
 				capabilities = capabilities
 			}
+
+			lspconfig.zls.setup{
+				capabilities = capabilities
+			}
 		end
 	}
 }

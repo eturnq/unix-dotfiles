@@ -3,8 +3,6 @@ vim.cmd("let mapleader = ' '")
 require("preferences")
 require("keymaps")
 
-vim.cmd("colorscheme nord")
-
 -- bootstrap LazyVim
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
@@ -59,3 +57,5 @@ require("lazy").setup({
 		}
 	}
 })
+
+vim.cmd("colorscheme nord")
