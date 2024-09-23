@@ -1,6 +1,6 @@
 #!/bin/sh
 
-printf "Installing git, python3, curl, wget...\n"
+printf "Installing bash, curl, git, python3, wget...\n"
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     # ...
@@ -13,19 +13,22 @@ elif [[ "$OSTYPE" == "darwin"* ]]; then
 		else
 				printf "Using Homebrew...\n"
 		fi
-		to_inst=()
+		to_inst=""
 
-		if [[ `which git` == "" ]]; then
-				to_inst+=("git")
-		fi
-		if [[ `which python3` == "" ]]; then
-				to_inst+=("python3")
+		if [[ `which curl` == "" ]]; then
+				to_inst+=" bash"
 		fi
 		if [[ `which curl` == "" ]]; then
-				to_inst+=("curl")
+				to_inst+=" curl"
+		fi
+		if [[ `which git` == "" ]]; then
+				to_inst+=" git"
+		fi
+		if [[ `which python3` == "" ]]; then
+				to_inst+=" python3"
 		fi
 		if [[ `which wget` == "" ]]; then
-				to_inst+=("wget")
+				to_inst+=" wget"
 		fi
 
 		if [[ "$to_inst" ]]; then
@@ -41,20 +44,22 @@ elif [[ "$OSTYPE" == "win32" ]]; then
     # I'm not sure this can happen.
 		printf "Win32 is not yet fully supported.\n"
 elif [[ "$OSTYPE" == "freebsd"* ]]; then
-		printf "FreeBSD is not yet fully supported.\n"
-		to_inst=()
+		to_inst=""
 
-		if [[ `which git` == "" ]]; then
-				to_inst+=("git")
-		fi
-		if [[ `which python3` == "" ]]; then
-				to_inst+=("python3")
+		if [[ `which curl` == "" ]]; then
+				to_inst+=" bash"
 		fi
 		if [[ `which curl` == "" ]]; then
-				to_inst+=("curl")
+				to_inst+=" curl"
+		fi
+		if [[ `which git` == "" ]]; then
+				to_inst+=" git"
+		fi
+		if [[ `which python3` == "" ]]; then
+				to_inst+=" python3"
 		fi
 		if [[ `which wget` == "" ]]; then
-				to_inst+=("wget")
+				to_inst+=" wget"
 		fi
 
 		if [[ "$to_inst" ]]; then

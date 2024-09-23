@@ -1,8 +1,5 @@
 import subprocess
 
-from os.path import join as join_path
-from os.path import realpath as real_path
-from os.path import expanduser as user_path
 from pathlib import Path as FsItem
 from shutil  import copyfile
 
@@ -24,9 +21,9 @@ def exe_in_path(exe):
 
 def fs_item_exists(fs_item):
     try:
-        stat = fs_item.lstat()
+        fs_item.lstat()
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 def install_file(source, target, is_link=False):
