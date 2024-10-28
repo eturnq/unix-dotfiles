@@ -3,4 +3,6 @@
 WALLPAPER=$HOME/Pictures/Wallpaper/current.wallpaper
 feh --bg-fill $WALLPAPER --bg-fill $WALLPAPER --bg-fill $WALLPAPER
 
+dunst &
+
 tint2 &
