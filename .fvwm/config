@@ -81,9 +81,7 @@ DesktopConfiguration global
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Test (Init) InitBackground
-#+ I Module FvwmButtons RightPanel
-#+ I Module FvwmButtons Dock
-+ I Module FvwmPager
++ I Module FvwmPager *
 + I Module FvwmEvent EventNewDesk
 
 # Function to set background when fvwm starts
@@ -159,50 +157,6 @@ AddToFunc   ToggleTitle
 + I ThisWindow (HasTitle) WindowStyle !Title
 + I TestRc (NoMatch) WindowStyle Title
 
-# Function: ChangeDesk
-#
-# This function is called by FvwmEvent every time the Desk is changed.
-DestroyFunc ChangeDesk
-AddToFunc   ChangeDesk
-+ I SendToModule FvwmButtons ChangeButton desk0 Colorset 10
-+ I SendToModule FvwmButtons ChangeButton desk1 Colorset 10
-+ I SendToModule FvwmButtons ChangeButton desk2 Colorset 10
-+ I SendToModule FvwmButtons ChangeButton desk3 Colorset 10
-+ I SendToModule FvwmButtons ChangeButton desk$0 Colorset 11
-
-DestroyFunc FvwmIconifyOrShade
-AddToFunc   FvwmIconifyOrShade
-	+ C Thumbnail
-
-DestroyFunc Thumbnail
-AddToFunc   Thumbnail
-	+ SetEnv fvwm_thumbnailing 1
-	+ I Raise
-	+ SetEnv Icon-$[w.id] $[w.iconfile]
-	+ I ThisWindow (!Shaded Iconifiable !Iconic) PipeRead "xwd -silent -id $[w.id] | \
-		convert -scale $$(($[w.width]/5)) -adaptive-resize 160x120^ -gravity center -crop 160x120+0+0 \
-		+repage -frame 1x1 -mattecolor black -quality 0 xwd:- png:$[FVWM_TMP]/icon.tmp.$[w.id].png && echo Nop"
-	+ I TestRc (Match) Test (f $[fvwm_icon]/$[w.iconfile], f $[FVWM_TMP]/icon.tmp.$[w.id].png) \
-		PipeRead "composite -geometry +2+4 $[fvwm_icon]/$[w.iconfile] $[FVWM_TMP]/icon.tmp.$[w.id].png \
-		$[FVWM_TMP]/icon.tmp.$[w.id].png && echo WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png || echo Nop"
-	+ I TestRc (NoMatch) WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png
-	+ I Iconify
-	+ SetEnv fvwm_thumbnailing 2
-DestroyFunc DeThumbnail
-AddToFunc   DeThumbnail
-	+ I PipeRead "echo WindowStyle Icon \\$\\[Icon-$[w.id]\\]"
-	+ I UnsetEnv Icon-$[w.id]
-	+ I Exec exec rm -f $[FVWM_TMP]/icon.tmp.$[w.id].png
-
-AddToFunc Deiconify-and-Rearrange
-	+ I Iconify
-	+ I All (CurrentPage, Iconic) PlaceAgain Icon
-DestroyFunc Move-or-Iconify
-AddToFunc Move-or-Iconify
-	+ I Raise
-	+ M Move
-	+ D Deiconify-and-Rearrange
-
 #############
 # 2: Styles #
 #############
@@ -239,7 +193,7 @@ Style * EdgeMoveDelay 350, EdgeMoveResistance 350
 # EwmhBaseStruts [screen name] [left] [right] [top] [bottom]
 # Reserves space along the edge(s) of the Screen that will not
 # be covered when maximizing or placing windows.
-EwmhBaseStruts screen $[monitor.primary] 0 120 0 0
+#EwmhBaseStruts screen $[monitor.primary] 0 120 0 0
 #EwmhBaseStruts 0 0 0 63
 
 # This sets the ClickTime and MoveThreshold used to determine
@@ -296,20 +250,8 @@ Style * Colorset1, HilightColorset 2, \
 #Style * !Icon
 
 # Window Specific Styles
-Style RightPanel !Title, !Borders, !Handles, Sticky, \
-                 WindowListSkip, NeverFocus
-##Style Dock !Title, !Borders, !Handles, Sticky, \
-##                 WindowListSkip, NeverFocus, \
-##		IconBox 67 0 -0 -0, IconFill l b, \
-##		IconGrid 1 1, IconSize 60 60, \
-##		!IconTitle, IconBackgrounRelief 2, \
-##		IconBackgroundPadding 0
-Style Dock !Maximizable, !Iconifiable, !Title, !Borders, Sticky, NeverFocus, WindowListSkip, CirculateSkip, !Closable
-
 Style ConfirmQuit !Title, PositionPlacement Center, WindowListSkip, Layer 6
 Style FvwmIdent WindowListSkip
-#Style * IconBox 67 0 -0 -0, IconFill l b, IconGrid 1 1
-#Style * IconSize 60 60, !IconTitle, IconBackgrounRelief 2, IconBackgroundPadding 0
 
 Style * IconBox 48x762+3+3, IconFill Left Top, IconGrid 10, 10 \
 	IconTitleFormat %i, IconTitleRelief, IconBackgroundRelief 1, \
@@ -352,15 +294,10 @@ Style "FvwmPager" !Title, !Handles, !Borders, !Maximizable, \
 ###########
 # Motif Theme
 Colorset 0  fg #ffffff, bg #2b4e5e, hi, sh, Plain, NoShape
-##Colorset 1  fg #000000, bg #88b2b1, hi, sh, Plain, NoShape
-##Colorset 2  fg #ffffff, bg #2b4e5e, hi, sh, Plain, NoShape
-##Colorset 3  fg black, bg #415554, hi, sh, Plain, NoShape
-##Colorset 4  fg black, bg #14252c, hi #24424f, sh #111f26, Plain, NoShape
-
-Colorset 1 fg black, bg #808080
-Colorset 2 fg black, bg #a59f80
-Colorset 3 fg black, bg #808080
-Colorset 4 fg black, bg #a59f80
+Colorset 1  fg black, bg #808080
+Colorset 2  fg black, bg #a59f80
+Colorset 3  fg black, bg #808080
+Colorset 4  fg black, bg #a59f80
 
 Colorset 5  fg #000000, bg #cbdcca, hi, sh, Plain, NoShape
 Colorset 6  fg #ffffff, bg #88b2b1, hi, sh, Plain, NoShape
@@ -464,6 +401,13 @@ AddToMenu   MenuWindowOpsLong "$[gt.Window Ops]" Title
 + "$[gt.Stays On Bottom]%icons/win/bottom.png%" Pick (CirculateHit) Layer 0 2
 + "" Nop
 + "$[gt.Identify]%icons/info.png%" Module FvwmIdent
+
+DestroyMenu MenuDeskChange "$[gt.Change Desk]" Title
+AddToMenu   MenuDeskChange
++ "$[gt.Main]" GotoDesk 0 0
++ "$[gt.Desk 1]" GotoDesk 1 0
++ "$[gt.Desk 2]" GotoDesk 2 0
++ "$[gt.Desk 3]" GotoDesk 3 0
 
 DestroyMenu MenuIconOps
 AddToMenu   MenuIconOps
@@ -593,11 +537,10 @@ Mouse 4 T    A WindowShade True
 Mouse 5 T    A WindowShade False
 Mouse 1 R    A Menu MenuFvwmRoot
 Mouse 2 R    A WindowList
-#Mouse 3 R    A Menu MenuWindowOpsLong
-#Mouse 1 I    A RaiseMoveX Move "Iconify off"
+Mouse 3 R    A Menu MenuDeskChange
 Mouse 3 T    A Menu MenuWindowOps
-#Mouse 3 I    A Menu MenuIconOps
-Mouse 1 I    A Deiconify-and-Rearrange
+Mouse 1 I    A Iconify
+Mouse 3 I    A Menu MenuIconOps
 
 # Shuffle moves a window in a given direction until it hits another window.
 # These bindings will shuffle a window using the arrow keys.
@@ -672,75 +615,10 @@ DestroyModuleConfig FvwmIdent:*
 DestroyModuleConfig FvwmScript:*
 *FvwmScript: DefaultColorset 10
 
-# FvwmButtons - RightPanel
-#
-# FvwmButtons is a powerful module that can be used to build custom
-# panels and docks. This config uses FvwmButtons to build the RightPanel.
-# The panel contains buttons to switch desks, FvwmPager, a system tray,
-# FvwmIconMan (list of running windows), and a clock.
-#
-# Note - To use the system tray you must have "stalonetray" installed.
-DestroyModuleConfig RightPanel:*
-*RightPanel: Geometry 120x$[monitor.$[monitor.primary].height]-0+0
-*RightPanel: Colorset 10
-*RightPanel: Rows $[monitor.$[monitor.primary].height]
-*RightPanel: Columns 120
-*RightPanel: Frame 0
-*RightPanel: Font "xft:Sans:Bold:size=10:antialias=True"
-#*RightPanel: (120x45, Icon "fvwm-logo-small.png", Frame 0)
-*RightPanel: (120x5, Frame 0)
-*RightPanel: (10x20, Frame 0)
-*RightPanel: (25x20, Id desk0, Title "0", Action (Mouse 1) GotoDesk 0 0, Colorset 11, ActiveColorset 12, Frame 0)
-*RightPanel: (25x20, Id desk1, Title "1", Action (Mouse 1) GotoDesk 0 1, ActiveColorset 12, Frame 0)
-*RightPanel: (25x20, Id desk2, Title "2", Action (Mouse 1) GotoDesk 0 2, ActiveColorset 12, Frame 0)
-*RightPanel: (25x20, Id desk3, Title "3", Action (Mouse 1) GotoDesk 0 3, ActiveColorset 12, Frame 0)
-*RightPanel: (10x20, Frame 0)
-*RightPanel: (5x80, Frame 0)
-*RightPanel: (110x80, Swallow FvwmPager 'Module FvwmPager *', Frame 0)
-*RightPanel: (5x80, Frame 0)
-*RightPanel: (120x5, Frame 0)
-##Test (x stalonetray) *RightPanel: (120x20, Swallow(NoClose,UseOld) \
-##   stalonetray 'Exec exec stalonetray --config \
-##   "$[FVWM_DATADIR]/default-config/stalonetrayrc"', Frame 0)
-###*RightPanel: (120x20, Frame 0)
-##Test (x stalonetray) PipeRead 'echo "*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-225)), \
-##   Top, Swallow FvwmIconMan \'Module FvwmIconMan\', Frame 0)"'
-###*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-225), Frame 0)
-##Test (!x stalonetray) PipeRead 'echo "*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-205)),\
-##   Top, Swallow FvwmIconMan \'Module FvwmIconMan\', Frame 0)"'
-#*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-205), Frame 0)
-*RightPanel: (120x45, Swallow DateTime 'Module FvwmScript FvwmScript-DateTime',\
-##   Frame 0)
-##*RightPanel: (120x5, Frame 0)
-
-# Dock
-DestroyModuleConfig Dock:*
-*Dock: Colorset 10
-*Dock: Rows 2
-#*Dock: Columns 6
-*Dock: ButtonGeometry 64x64+0-0
-*Dock: Frame 2
-*Dock: BoxSize smart
-#*Dock: (Swallow(UseOld,NoClose,Respawn) $[infostore.tray] 'Exec exec $[infostore.traycommand]', Action(Mouse1) ShowDesktop, ActionIgnoresClientWindow, Frame 2)
-*Dock: (Swallow(UseOld,NoClose) FvwmIconMan 'Module FvwmIconMan', Frame 2)
-
 # FvwmPager
 #
 # This module displays the location of the windows on the various Pages
 # and Desks. This is setup to show only the Pages on the current Desk.
-##DestroyModuleConfig FvwmPager:*
-##*FvwmPager: Geometry 110x80
-##*FvwmPager: Colorset * 10
-##*FvwmPager: HilightColorset * 13
-##*FvwmPager: BalloonColorset * 10
-##*FvwmPager: WindowColorsets 10 11
-##*FvwmPager: Font None
-##*FvwmPager: Balloons All
-##*FvwmPager: BalloonFont "xft:Sans:Bold:size=8:antialias=True"
-##*FvwmPager: BallonYOffset +2
-##*FvwmPager: Window3dBorders
-##*FvwmPager: MiniIcons
-
 DestroyModuleConfig FvwmPager:*
 	*FvwmPager: Geometry 160x90-3-3
 	*FvwmPager: Colorset * 9
@@ -750,7 +628,7 @@ DestroyModuleConfig FvwmPager:*
 	*FvwmPager: BalloonStringFormat %i
 	*FvwmPager: WindowColorsets 3 10
 	*FvwmPager: Balloons All
-	*FvwmPager: BallonYOffset +2
+	*FvwmPager: BalloonYOffset -2
 	*FvwmPager: UseSkipList
 	*FvwmPager: Rows 1
 
@@ -758,37 +636,34 @@ DestroyModuleConfig FvwmPager:*
 #
 # FvwmIconMan is a powerful tool to list and manage windows. This
 # is used as the window list in the panel or taskbar.
-DestroyModuleConfig FvwmIconMan:*
-*FvwmIconMan: UseWinList true
-#*FvwmIconMan: ButtonGeometry 120x20
-*FvwmIconMan: ButtonGeometry 64x64 
-*FvwmIconMan: ManagerGeometry 0x1
-#*FvwmIconMan: ManagerGeometry 1x0
-*FvwmIconMan: Colorset 10
-*FvwmIconMan: FocusColorset 11
-*FvwmIconMan: IconColorset 14
-*FvwmIconMan: FocusAndSelectColorset 12
-*FvwmIconMan: SelectColorset 12
-*FvwmIconMan: IconAndSelectColorset 12
-*FvwmIconMan: DrawIcons always
-*FvwmIconMan: ReliefThickness 0
-*FvwmIconMan: Format "%t"
-*FvwmIconMan: Font "xft:Sans:Bold:size=8:antialias=True"
-*FvwmIconMan: Action Mouse 0 A ret
-*FvwmIconMan: Action Mouse 1 A sendcommand IconManClick
-*FvwmIconMan: Action Mouse 3 A sendcommand "Menu MenuIconOps"
-*FvwmIconMan: Resolution global
-*FvwmIconMan: Tips needed
-*FvwmIconMan: Sort id
-
+##DestroyModuleConfig FvwmIconMan:*
+##*FvwmIconMan: UseWinList true
+###*FvwmIconMan: ButtonGeometry 120x20
+##*FvwmIconMan: ButtonGeometry 64x64 
+##*FvwmIconMan: ManagerGeometry 0x1
+###*FvwmIconMan: ManagerGeometry 1x0
+##*FvwmIconMan: Colorset 10
+##*FvwmIconMan: FocusColorset 11
+##*FvwmIconMan: IconColorset 14
+##*FvwmIconMan: FocusAndSelectColorset 12
+##*FvwmIconMan: SelectColorset 12
+##*FvwmIconMan: IconAndSelectColorset 12
+##*FvwmIconMan: DrawIcons always
+##*FvwmIconMan: ReliefThickness 0
+##*FvwmIconMan: Format "%t"
+##*FvwmIconMan: Font "xft:Sans:Bold:size=8:antialias=True"
+##*FvwmIconMan: Action Mouse 0 A ret
+##*FvwmIconMan: Action Mouse 1 A sendcommand IconManClick
+##*FvwmIconMan: Action Mouse 3 A sendcommand "Menu MenuIconOps"
+##*FvwmIconMan: Resolution global
+##*FvwmIconMan: Tips needed
+##*FvwmIconMan: Sort id
+##
 # FvwmEvent
 #
 # FvwmEvent is a module that can run an action or function
 # on specific events. This instance changes which desk number
 # is highlighted when the desk is changed.
-DestroyModuleConfig EventNewDesk:*
-*EventNewDesk: PassID
-*EventNewDesk: new_desk ChangeDesk
 
 # Local configuration file. For use with the default-config.
 #
