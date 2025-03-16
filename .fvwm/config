@@ -35,8 +35,11 @@ InfoStoreAdd terminal x-terminal-emulator
 # This is used for "Run Command" and the Meta+Space key-binding.
 # runcmd is the binary name and runcmdopt contains additional
 # command line options.
-InfoStoreAdd runcmd "dmenu_run"
-InfoStoreAdd runcmdopt "-nb '#2b4e5e'"
+InfoStoreAdd runcmd "rofi"
+InfoStoreAdd runcmdopt "-show drun"
+
+InfoStoreAdd stalonetray
+InfoStoreAdd traycommand 'stalonetray -bg "#333333" --decorations none --icon-size 64 --geometry 2x2 --max-geometry 2x2 --scrollbars horizontal --scrollbars-size 3 --dockapp-mode simple --kludges force_icons_size'
 
 # DesktopConfiguration sets how fvwm handles desktops:
 #
@@ -78,7 +81,9 @@ DesktopConfiguration global
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Test (Init) InitBackground
-+ I Module FvwmButtons RightPanel
+#+ I Module FvwmButtons RightPanel
+#+ I Module FvwmButtons Dock
++ I Module FvwmPager
 + I Module FvwmEvent EventNewDesk
 
 # Function to set background when fvwm starts
@@ -142,7 +147,7 @@ AddToFunc   IconManClick
 + I ThisWindow (Raised, !Shaded, !Iconic, CurrentPage, AnyScreen) Iconify
 + I TestRc (Match) Break
 + I ThisWindow WindowShade off
-+ I ThisWindow Iconify off
+#+ I ThisWindow Iconify off
 + I ThisWindow Raise
 + I ThisWindow (AcceptsFocus) FlipFocus
 
@@ -165,6 +170,38 @@ AddToFunc   ChangeDesk
 + I SendToModule FvwmButtons ChangeButton desk3 Colorset 10
 + I SendToModule FvwmButtons ChangeButton desk$0 Colorset 11
 
+DestroyFunc FvwmIconifyOrShade
+AddToFunc   FvwmIconifyOrShade
+	+ C Thumbnail
+
+DestroyFunc Thumbnail
+AddToFunc   Thumbnail
+	+ SetEnv fvwm_thumbnailing 1
+	+ I Raise
+	+ SetEnv Icon-$[w.id] $[w.iconfile]
+	+ I ThisWindow (!Shaded Iconifiable !Iconic) PipeRead "xwd -silent -id $[w.id] | \
+		convert -scale $$(($[w.width]/5)) -adaptive-resize 160x120^ -gravity center -crop 160x120+0+0 \
+		+repage -frame 1x1 -mattecolor black -quality 0 xwd:- png:$[FVWM_TMP]/icon.tmp.$[w.id].png && echo Nop"
+	+ I TestRc (Match) Test (f $[fvwm_icon]/$[w.iconfile], f $[FVWM_TMP]/icon.tmp.$[w.id].png) \
+		PipeRead "composite -geometry +2+4 $[fvwm_icon]/$[w.iconfile] $[FVWM_TMP]/icon.tmp.$[w.id].png \
+		$[FVWM_TMP]/icon.tmp.$[w.id].png && echo WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png || echo Nop"
+	+ I TestRc (NoMatch) WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png
+	+ I Iconify
+	+ SetEnv fvwm_thumbnailing 2
+DestroyFunc DeThumbnail
+AddToFunc   DeThumbnail
+	+ I PipeRead "echo WindowStyle Icon \\$\\[Icon-$[w.id]\\]"
+	+ I UnsetEnv Icon-$[w.id]
+	+ I Exec exec rm -f $[FVWM_TMP]/icon.tmp.$[w.id].png
+
+AddToFunc Deiconify-and-Rearrange
+	+ I Iconify
+	+ I All (CurrentPage, Iconic) PlaceAgain Icon
+DestroyFunc Move-or-Iconify
+AddToFunc Move-or-Iconify
+	+ I Raise
+	+ M Move
+	+ D Deiconify-and-Rearrange
 
 #############
 # 2: Styles #
@@ -203,6 +240,7 @@ Style * EdgeMoveDelay 350, EdgeMoveResistance 350
 # Reserves space along the edge(s) of the Screen that will not
 # be covered when maximizing or placing windows.
 EwmhBaseStruts screen $[monitor.primary] 0 120 0 0
+#EwmhBaseStruts 0 0 0 63
 
 # This sets the ClickTime and MoveThreshold used to determine
 # Double Clicks, Hold and Move for the mouse.
@@ -239,12 +277,12 @@ IgnoreModifiers L25
 #Style * BorderWidth 5, HandleWidth 5, MWMButtons, FvwmBorder, FirmBorder
 #Style * Colorset 1, HilightColorset 2
 
-# CDE Styles
+# Motif Styles
 Style * Colorset1, HilightColorset 2, \
 	BorderColorset 3, HilightBorderColorset 4, \
 	BorderWidth 5, HandleWidth 5, \
 	MWMBorder, DepressableBorder, \
-	MWMButtons, UseDecor CDEDecor
+	MWMButtons, UseDecor MotifDecor 
 
 # BorderColorset and HilightBorderColorset take 8 positive colorsets
 # to specify the colorset for each edge and handle (corner). The order is:
@@ -255,13 +293,37 @@ Style * Colorset1, HilightColorset 2, \
 
 # Disable Icons from appearing on desktop.
 # Comment this out or use Style * Icon to get the icons back.
-Style * !Icon
+#Style * !Icon
 
 # Window Specific Styles
 Style RightPanel !Title, !Borders, !Handles, Sticky, \
                  WindowListSkip, NeverFocus
+##Style Dock !Title, !Borders, !Handles, Sticky, \
+##                 WindowListSkip, NeverFocus, \
+##		IconBox 67 0 -0 -0, IconFill l b, \
+##		IconGrid 1 1, IconSize 60 60, \
+##		!IconTitle, IconBackgrounRelief 2, \
+##		IconBackgroundPadding 0
+Style Dock !Maximizable, !Iconifiable, !Title, !Borders, Sticky, NeverFocus, WindowListSkip, CirculateSkip, !Closable
+
 Style ConfirmQuit !Title, PositionPlacement Center, WindowListSkip, Layer 6
 Style FvwmIdent WindowListSkip
+#Style * IconBox 67 0 -0 -0, IconFill l b, IconGrid 1 1
+#Style * IconSize 60 60, !IconTitle, IconBackgrounRelief 2, IconBackgroundPadding 0
+
+Style * IconBox 48x762+3+3, IconFill Left Top, IconGrid 10, 10 \
+	IconTitleFormat %i, IconTitleRelief, IconBackgroundRelief 1, \
+	IconBackgroundPadding 0, IconSize -1 -1, IconTitleColorset 6, \
+	IconBackgroundColorset 6, HilightIconTitleColorset 8, \
+		IconFill top bottom
+
+Style * StickyIcon, !StickStippledIconTitle
+
+Style "FvwmPager" !Title, !Handles, !Borders, !Maximizable, \
+	Sticky, WindowListSkip, CirculateSkip, !Closable, \
+	StaysOnBottom, FixedPosition, FixedSize, !Iconifiable, \
+	MouseFocusClickRaises, Layer 0 2, State 2, WindowListSkip, \
+	CirculateSkip, MiniIcon
 
 #######
 # 3: Colorsets
@@ -288,12 +350,18 @@ Style FvwmIdent WindowListSkip
 #      13 - FvwmPager Active Page
 #      14 - FvwmIconMan Iconified Button
 ###########
-# Art-Deco theme (Blue)
-##Colorset 0  fg #ffffff, bg #2b4e5e, hi, sh, Plain, NoShape
+# Motif Theme
+Colorset 0  fg #ffffff, bg #2b4e5e, hi, sh, Plain, NoShape
 ##Colorset 1  fg #000000, bg #88b2b1, hi, sh, Plain, NoShape
 ##Colorset 2  fg #ffffff, bg #2b4e5e, hi, sh, Plain, NoShape
 ##Colorset 3  fg black, bg #415554, hi, sh, Plain, NoShape
 ##Colorset 4  fg black, bg #14252c, hi #24424f, sh #111f26, Plain, NoShape
+
+Colorset 1 fg black, bg #808080
+Colorset 2 fg black, bg #a59f80
+Colorset 3 fg black, bg #808080
+Colorset 4 fg black, bg #a59f80
+
 Colorset 5  fg #000000, bg #cbdcca, hi, sh, Plain, NoShape
 Colorset 6  fg #ffffff, bg #88b2b1, hi, sh, Plain, NoShape
 Colorset 7  fg #999999, bg #cbdcca, hi, sh, Plain, NoShape
@@ -303,20 +371,6 @@ Colorset 11 fg #ffffff, bg #1a6e99, hi #ffffff, sh #ffffff, Plain, NoShape
 Colorset 12 fg #2d2d2d, bg #ffffff, hi, sh, Plain, NoShape
 Colorset 13 fg #ffffff, bg #006c6c, hi, sh, Plain, NoShape
 Colorset 14 fg #a8988f, bg #2b4e5e, hi #aaaaaa, sh #999999, Plain, NoShape
-
-#CDE theme
-# 1 - Inactive Windows
-# 2 - Active Window
-# 3 - Inactive Windows Borders
-# 4 - Active Windows Borders
-#Colorset 1 fg black, bg #afbdc07ac200
-Colorset 1 fg black, bg #808080
-#Colorset 2 fg black, bg #cc0068006f00
-Colorset 2 fg black, bg #a59f80
-#Colorset 3 fg black, bg #afbdc07ac200
-Colorset 3 fg black, bg #808080
-#Colorset 4 fg black, bg #cc0068006f00
-Colorset 4 fg black, bg #a59f80
 
 #######
 # 4: Menus
@@ -339,7 +393,7 @@ AddToMenu   MenuFvwmRoot "Fvwm" Title
 Test (x $[infostore.runcmd]) + "R&un Command%icons/run_arrow.png%" Exec exec $[infostore.runcmd] $[infostore.runcmdopt]
 + "" Nop
 + "Fvwm&Console%icons/terminal.png%"       Module FvwmConsole -terminal $[infostore.terminal]
-+ "$[gt.&Wallpapers]%icons/wallpaper.png%" Popup BGMenu
+#+ "$[gt.&Wallpapers]%icons/wallpaper.png%" Popup BGMenu
 + "$[gt.M&an Pages]%icons/help.png%"       Popup MenuFvwmManPages
 + "$[gt.Cop&y Config]%icons/conf.png%"     FvwmScript FvwmScript-ConfirmCopyConfig
 + "" Nop
@@ -522,12 +576,6 @@ Test (x $[infostore.runcmd]) Silent Key Space A M Exec exec $[infostore.runcmd] 
 #   2 - Close on single click, Destory on double click.
 #   4 - Maximize (right/middle button will only maximize vertical/horizontal)
 #   6 - Iconify (minimize)
-##Mouse 1 1 A Menu MenuWindowOps Delete
-##Mouse 1 2 A Close
-##Mouse 1 4 A Maximize 100 100
-##Mouse 2 4 A Maximize 0 100
-##Mouse 3 4 A Maximize 100 0
-##Mouse 1 6 A Iconify
 Mouse 1 4 A Iconify
 Mouse 1 2 A Maximize
 Mouse 1 1 A Menu MenuWindowOps Delete
@@ -545,10 +593,11 @@ Mouse 4 T    A WindowShade True
 Mouse 5 T    A WindowShade False
 Mouse 1 R    A Menu MenuFvwmRoot
 Mouse 2 R    A WindowList
-Mouse 3 R    A Menu MenuWindowOpsLong
-Mouse 1 I    A RaiseMoveX Move "Iconify off"
+#Mouse 3 R    A Menu MenuWindowOpsLong
+#Mouse 1 I    A RaiseMoveX Move "Iconify off"
 Mouse 3 T    A Menu MenuWindowOps
-Mouse 3 I    A Menu MenuIconOps
+#Mouse 3 I    A Menu MenuIconOps
+Mouse 1 I    A Deiconify-and-Rearrange
 
 # Shuffle moves a window in a given direction until it hits another window.
 # These bindings will shuffle a window using the arrow keys.
@@ -581,7 +630,7 @@ Key Left    WTSF    CSM Maximize True growleft 0
 #   4 - Maximize
 #   6 - Minimize
 ###########
-AddToDecor CDEDecor
+AddToDecor MotifDecor
 + TitleStyle	AllInactive -- Raised
 + TitleStyle	AllActive -- Raised
 + ButtonStyle	All Simple -- UseTitleStyle
@@ -599,30 +648,6 @@ AddToDecor CDEDecor
 + AddButtonStyle 4 Vector 3 42x58@1 42x42@1 58x42@1
 
 + TitleStyle Height MinHeight 24 
-#TitleStyle Centered Height 18 -- Flat
-#ButtonStyle All ActiveUp Vector 5 15x15@4 15x85@3 85x85@3 85x15@3 \
-#                15x15@3 -- Flat
-#ButtonStyle All ToggledActiveUp Vector 5 15x15@4 15x85@3 85x85@3 \
-#                85x15@3 15x15@3 -- Flat
-#ButtonStyle All ActiveDown Vector 5 20x20@4 20x80@3 80x80@3 80x20@3 \
-#                20x20@3 -- Flat
-#ButtonStyle All ToggledActiveDown Vector 5 20x20@4 20x80@3 80x80@3 \
-#                80x20@3 20x20@3 -- Flat
-#ButtonStyle All ToggledInactive Vector 5 47x47@3 57x53@3 53x53@3 \
-#                53x47@3 47x47@3 -- Flat
-#ButtonStyle All Inactive Vector 5 47x47@3 57x53@3 53x53@3 53x47@3 \
-#                47x47@3 -- Flat
-#AddButtonStyle 1 Active Vector 5 45x45@3 55x45@3 55x55@3 45x55@3 45x45@3
-#AddButtonStyle 2 Active Vector 4 35x35@3 65x65@3 65x35@4 35x65@3
-#AddButtonStyle 4 Active Vector 8 30x70@3 30x30@3 70x30@3 70x70@3 30x70@3 \
-#                 30x50@4 50x50@3 50x70@3
-#AddButtonStyle 4 ToggledActiveUp Vector 8 30x70@3 30x30@3 70x30@3 70x70@3 \
-#                 30x70@3 50x30@4 50x50@3 70x50@3
-#AddButtonStyle 6 Active Vector 5 35x60@3 65x60@3 65x50@3 35x50@3 35x60@3
-##ButtonStyle All - Clear
-##ButtonStyle 1 - MwmDecorMenu
-##ButtonStyle 4 - MwmDecorMax
-##ButtonStyle 6 - MwmDecorMin
 
 ############
 # 7: Modules
@@ -674,33 +699,60 @@ DestroyModuleConfig RightPanel:*
 *RightPanel: (110x80, Swallow FvwmPager 'Module FvwmPager *', Frame 0)
 *RightPanel: (5x80, Frame 0)
 *RightPanel: (120x5, Frame 0)
-Test (x stalonetray) *RightPanel: (120x20, Swallow(NoClose,UseOld) \
-    stalonetray 'Exec exec stalonetray --config \
-    "$[FVWM_DATADIR]/default-config/stalonetrayrc"', Frame 0)
-Test (x stalonetray) PipeRead 'echo "*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-225)), \
-    Top, Swallow FvwmIconMan \'Module FvwmIconMan\', Frame 0)"'
-Test (!x stalonetray) PipeRead 'echo "*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-205)),\
-    Top, Swallow FvwmIconMan \'Module FvwmIconMan\', Frame 0)"'
+##Test (x stalonetray) *RightPanel: (120x20, Swallow(NoClose,UseOld) \
+##   stalonetray 'Exec exec stalonetray --config \
+##   "$[FVWM_DATADIR]/default-config/stalonetrayrc"', Frame 0)
+###*RightPanel: (120x20, Frame 0)
+##Test (x stalonetray) PipeRead 'echo "*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-225)), \
+##   Top, Swallow FvwmIconMan \'Module FvwmIconMan\', Frame 0)"'
+###*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-225), Frame 0)
+##Test (!x stalonetray) PipeRead 'echo "*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-205)),\
+##   Top, Swallow FvwmIconMan \'Module FvwmIconMan\', Frame 0)"'
+#*RightPanel: (120x$(($[monitor.$[monitor.primary].height]-205), Frame 0)
 *RightPanel: (120x45, Swallow DateTime 'Module FvwmScript FvwmScript-DateTime',\
-    Frame 0)
-*RightPanel: (120x5, Frame 0)
+##   Frame 0)
+##*RightPanel: (120x5, Frame 0)
+
+# Dock
+DestroyModuleConfig Dock:*
+*Dock: Colorset 10
+*Dock: Rows 2
+#*Dock: Columns 6
+*Dock: ButtonGeometry 64x64+0-0
+*Dock: Frame 2
+*Dock: BoxSize smart
+#*Dock: (Swallow(UseOld,NoClose,Respawn) $[infostore.tray] 'Exec exec $[infostore.traycommand]', Action(Mouse1) ShowDesktop, ActionIgnoresClientWindow, Frame 2)
+*Dock: (Swallow(UseOld,NoClose) FvwmIconMan 'Module FvwmIconMan', Frame 2)
 
 # FvwmPager
 #
 # This module displays the location of the windows on the various Pages
 # and Desks. This is setup to show only the Pages on the current Desk.
+##DestroyModuleConfig FvwmPager:*
+##*FvwmPager: Geometry 110x80
+##*FvwmPager: Colorset * 10
+##*FvwmPager: HilightColorset * 13
+##*FvwmPager: BalloonColorset * 10
+##*FvwmPager: WindowColorsets 10 11
+##*FvwmPager: Font None
+##*FvwmPager: Balloons All
+##*FvwmPager: BalloonFont "xft:Sans:Bold:size=8:antialias=True"
+##*FvwmPager: BallonYOffset +2
+##*FvwmPager: Window3dBorders
+##*FvwmPager: MiniIcons
+
 DestroyModuleConfig FvwmPager:*
-*FvwmPager: Geometry 110x80
-*FvwmPager: Colorset * 10
-*FvwmPager: HilightColorset * 13
-*FvwmPager: BalloonColorset * 10
-*FvwmPager: WindowColorsets 10 11
-*FvwmPager: Font None
-*FvwmPager: Balloons All
-*FvwmPager: BalloonFont "xft:Sans:Bold:size=8:antialias=True"
-*FvwmPager: BallonYOffset +2
-*FvwmPager: Window3dBorders
-*FvwmPager: MiniIcons
+	*FvwmPager: Geometry 160x90-3-3
+	*FvwmPager: Colorset * 9
+	*FvwmPager: HilightColorset * 9
+	*FvwmPager: BalloonColorset * 9
+	*FvwmPager: BalloonBorderWidth 1
+	*FvwmPager: BalloonStringFormat %i
+	*FvwmPager: WindowColorsets 3 10
+	*FvwmPager: Balloons All
+	*FvwmPager: BallonYOffset +2
+	*FvwmPager: UseSkipList
+	*FvwmPager: Rows 1
 
 # FvwmIconMan
 #
@@ -708,8 +760,10 @@ DestroyModuleConfig FvwmPager:*
 # is used as the window list in the panel or taskbar.
 DestroyModuleConfig FvwmIconMan:*
 *FvwmIconMan: UseWinList true
-*FvwmIconMan: ButtonGeometry 120x20
-*FvwmIconMan: ManagerGeometry 1x1
+#*FvwmIconMan: ButtonGeometry 120x20
+*FvwmIconMan: ButtonGeometry 64x64 
+*FvwmIconMan: ManagerGeometry 0x1
+#*FvwmIconMan: ManagerGeometry 1x0
 *FvwmIconMan: Colorset 10
 *FvwmIconMan: FocusColorset 11
 *FvwmIconMan: IconColorset 14

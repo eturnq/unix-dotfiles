@@ -1,0 +1,769 @@
+###############=
+#---- GLOBAL SETTINGS
+###############=
+
+# Set up 4 Desktops, 4 pages each 
+DesktopSize 2x2
+DesktopName 0 	FVWM Desktop (1) 
+DesktopName 1 	FVWM Desktop (2) 
+DesktopName 2 	FVWM Desktop (3) 
+DesktopName 3 	FVWM Desktop (4) 
+
+# Maximum delay in milliseconds between a button press and a button
+# release for the Function command to consider the action a mouse click
+ClickTime 	250
+
+# Move al windows as solid ones 
+OpaqueMoveSize  -1	
+
+# Snap edges when windows are moved close to each other 
+SnapAttraction 	10 All Screen
+XorValue 	55555
+
+# Disable EdgeScrolling but make it possible
+# to move windows over the screen edge
+EdgeScroll 	0 0
+EdgeResistance	-1 
+EdgeThickness 	2 
+EdgeCommand 	Left nop
+
+# Installed colormap follows the windows the cursor is in
+ColormapFocus 	FollowsMouse
+
+# honor window's own idea of placement 
+EWMHUseStackingOrderHints
+
+# 3 pixel screen edges
+EwmhBaseStruts  3 3 3 3 	
+
+# Virtaul layers in use for windows to overlap
+DefaultLayers 	2 4 6
+
+# Ignore Num/Scroll-Lock as modifiers 
+IgnoreModifiers L25
+
+# a pixel 10 mouse movement with whatever 
+# button pressed  is assumed to be a drag
+MoveThreshold 	10
+
+# Always hide the geometry info box 
+HideGeometryWindow Move, Resize 
+
+# Small fixes for modern workflows
+BugOpts 	FlickeringMoveWorkaround True,  EWMHIconicStateWorkaround True
+
+# Default terminal emulator 
+InfoStoreAdd terminal urxvt
+
+# Default launcher
+InfoStoreAdd runcmd "dmenu_run -b -p '>>' -fn 'nu-8' -nb '#151515' -nf '#D7D0C7' -sb '#151515' -sf '#4E9FB1'"
+
+# Default web browser 
+InfoStoreAdd browser seamonkey
+
+###############=
+#---- PATHS
+###############=
+
+ImagePath $[FVWM_DATADIR]/pixmaps:/usr/pkg/include/X11/pixmaps
+SetEnv FVWM_IMG $[FVWM_USERDIR]/images
+SetEnv FVWM_ICON $[FVWM_USERDIR]/icons
+SetEnv FVWM_S $[FVWM_USERDIR]/scripts
+SetEnv FVWM_WALL $[FVWM_USERDIR]/wallpapers
+SetEnv FVWM_TMP $[FVWM_USERDIR]/tmp
+
+###############=
+#---- COLORSETS
+###############=
+
+#--- Window Deco
+Colorset  3 fg #505050, bg #171717
+Colorset  4 fg #808080, bg #151515
+Colorset  5 fg #D7D0C7, bg #4E9FB1
+
+Colorset  6 fg #909090, bg #151515, sh #4E9FB1, hi #4E9FB1
+Colorset  7 fg #D7D0C7, bg #151515, sh #eb928e, hi #151515
+Colorset  8 fg #D7D0C7, bg #151515, sh #4E9FB1, hi #4E9FB1
+
+#--- Pager
+Colorset  9 fg #4E9FB1, bg #151515, sh #eeeeee, hi #303030
+Colorset 10 fg #bbbbbb, bg #303030, sh #eeeeee, hi #303030
+
+###############=
+#---- STYLES
+###############=
+
+#--- General 
+  Style * PositionPlacement UnderMouse, GrabFocusOff
+  Style * NoPPosition, ResizeOpaque
+  Emulate MWM
+  DefaultFont "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+
+  HideGeometryWindow Always
+  SnapAttraction 5 SameType Screen
+  SnapGrid 5 5 
+  XorValue 55555
+
+  Style * DecorateTransient, DontRaiseTransient
+  Style * DontLowerTransient, StackTransientParent
+  Style * GrabFocusTransientOff
+  Style * WindowShadeSteps 20, WindowShadeScrolls
+
+#--- Windows
+  DestroyDecor MyDecor
+  AddToDecor   MyDecor
+	+ TitleStyle RightJustified Height 18
+	+ ButtonStyle 2 ActiveUp   Vector 6 30x50@3 40x40@3 50x50@3 50x65@4 40x55@3 30x65@3 -- Flat
+	+ ButtonStyle 2 ActiveDown Vector 6 30x50@3 40x40@3 50x50@3 50x65@4 40x55@3 30x65@3 -- Flat
+	+ ButtonStyle 2 Inactive   Vector 6 30x50@3 40x40@3 50x50@3 50x65@4 40x55@3 30x65@3 -- Flat
+	+ ButtonStyle 4 ActiveUp   Vector 6 40x50@3 30x40@3 40x30@3 55x50@4 40x40@3 55x30@3 -- Flat
+	+ ButtonStyle 4 ActiveDown Vector 6 40x50@3 30x40@3 40x30@3 55x50@4 40x40@3 55x30@3 -- Flat
+	+ ButtonStyle 4 Inactive   Vector 6 40x50@3 30x40@3 40x30@3 55x50@4 40x40@3 55x30@3 -- Flat
+	+ ButtonStyle 6 ActiveUp   Vector 6 30x20@3 40x30@3 50x20@3 50x30@4 40x40@3 30x30@3 -- Flat
+	+ ButtonStyle 6 ActiveDown Vector 6 30x20@3 40x30@3 50x20@3 50x30@4 40x40@3 30x30@3 -- Flat
+	+ ButtonStyle 6 Inactive   Vector 6 30x20@3 40x30@3 50x20@3 50x30@4 40x40@3 30x30@3 -- Flat
+	+ TitleStyle -- Flat
+	+ BorderStyle Simple -- NoInset Flat
+	+ ButtonStyle All -- UseTitleStyle
+
+  Style *   UseDecor MyDecor
+  Style *   Font "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+#  Style *   NoTitle
+  Style *   BorderWidth 2, HandleWidth 2
+  Style *   BorderColorset 4
+  Style *   HilightBorderColorset 5
+  Style *   SloppyFocus
+  Style *   MouseFocusClickRaises
+  Style *   FPClickRaisesFocused
+  Style *   FPGrabFocus
+  Style *   FPReleaseFocus
+  Style *   FPLenient
+  Style *   FPSortWindowlistByFocus
+  Style *   FPIgnoreRaiseClickMotion
+  Style *   NoPPosition
+  Style *   TileCascadePlacement
+  Style *   DecorateTransient
+  Style *   StackTransientParent
+  Style *   EWMHUseStackingOrderHints
+  Style *   EdgeMoveDelay 350
+  Style *   EdgeMoveResistance 25
+  Style *   Font "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+  Style *   WindowShadeSteps 64
+  Style *   WindowShadeShrinks
+  Style *   HintOverride
+  Style *   ResizeOpaque
+  Style *   ResizeHintOverride
+  Style *   MwmDecor
+  Style *   MwmBorder
+  Style *   MwmButtons
+  Style *   MwmFunctions
+  Style *	MiniIcon
+  Style *   SnapGrid 5 5
+
+#--- Cursors
+  CursorStyle ROOT left_ptr
+  CursorStyle TITLE left_ptr
+  CursorStyle DEFAULT left_ptr
+  CursorStyle SYS left_ptr
+  CursorStyle MENU left_ptr
+  CursorStyle WAIT left_ptr
+  BusyCursor  DynamicMenu True, Read True, Wait True
+
+#--- Menus
+  MenuStyle * PopupDelayed, PopupDelay 300, PopdownImmediately, \
+	PopupOffset 10 95, TitleWarpOff TitleUnderlines2, \
+	SeparatorsShort, TrianglesSolid, AnimationOff, \
+	AutomaticHotkeysOff, BorderWidth 2, PopupAsSubmenu, \
+	HoldSubmenus, SubmenusRight, ItemFormat "%|%10.10l%5.5>%|", \
+	VerticalItemSpacing 4 4, VerticalTitleSpacing 3 3, \
+	MenuColorset 6, ActiveFore, Hilight3DOff, TitleColorset 7, \
+	ActiveColorset 7, Font "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+
+#--- Pager
+  Style "FvwmPager" !Title, !Handles, !Borders, !Maximizable, \
+	Sticky, WindowListSkip, CirculateSkip, !Closable, \
+	StaysOnBottom, FixedPosition, FixedSize, !Iconifiable, \
+	MouseFocusClickRaises, Layer 0 2, State 2, WindowListSkip, \
+	CirculateSkip, MiniIcon
+
+#--- Ident
+	*FvwmIdent: Colorset 4
+	*FvwmIdent: Font "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+
+#--- XClock 
+  Style "XClock" Sticky, !Title, !Handles, !Borders, \
+  	!Maximizable, WindowListSkip, CirculateSkip, !Closable, \         
+  	StaysOnBottom, FixedPosition, FixedSize, !Iconifiable, \
+  	MouseFocusClickRaises, Layer 0 2, State 2, WindowListSkip, \
+  	CirculateSkip
+
+
+###############=
+#---- FUNCTIONS
+###############=
+
+# Startup Modules
+  DestroyFunc StartFunction
+  AddToFunc StartFunction
+	+ I Module FvwmPager
+#	+ I Module FvwmAnimate
+
+# Startup Sript
+  DestroyFunc InitFunction
+  AddToFunc InitFunction
+ 	+ I Test (F $[FVWM_USERDIR]/autostart)\
+		Exec exec /bin/sh $[FVWM_USERDIR]/autostart
+        + I Exec exec /bin/sh $[FVWM_S]/autoxrandr		
+	+ I Exec exec fvwm-root -r $[FVWM_WALL]/bg4.png
+
+# Basic Fuctions
+  DestroyFunc RestartFunction
+  AddToFunc RestartFunction
+	+ I Nop
+	+ I Exec /bin/sh $[FVWM_S]/autoxrandr
+  DestroyFunc SessionInitFunction
+  AddToFunc SessionInitFunction
+	+ I Nop
+
+  DestroyFunc SessionRestartFunction
+  AddToFunc SessionRestartFunction
+	+ I Nop
+
+  DestroyFunc FvwmDeleteOrDestroy
+  AddToFunc   FvwmDeleteOrDestroy
+	+ H Nop
+	+ M Nop
+	+ C Delete
+	+ D Destroy
+
+  DestroyFunc FvwmIconifyOrShade
+  AddToFunc   FvwmIconifyOrShade
+	+ C Thumbnail
+
+  DestroyFunc FvwmMaximize
+  AddToFunc   FvwmMaximize
+	+ H Nop
+	+ M Nop
+	+ C Maximize $0 $1
+
+  DestroyFunc FvwmMoveOrIconify
+  AddToFunc   FvwmMoveOrIconify
+	+ M Move
+	+ D Iconify
+
+  DestroyFunc FvwmWindowShade
+  AddToFunc   FvwmWindowShade
+	+ D WindowShade $0
+
+
+# Suckless WindowList
+  AddToFunc PickWindow
+   	+ I WindowList (CurrentPage) CurrentDesk NoDeskNum, \
+       		NoIcons, NoSticky, IconifiedAtEnd, \
+       		SelectOnRelease, MaxLabelWidth 45
+
+
+# Raise & Move / Shade
+  DestroyFunc Move-or-Raise
+  AddToFunc Move-or-Raise
+	+ I Raise
+	+ M Move
+	+ D WindowShade
+
+# Move to Bottom Layer/Unmaximize
+  AddToFunc MoveLower
+ 	+ I Layer 0 4
+ 	+ C Lower
+ 	+ M ThisWindow (Maximized) Maximize false
+	+ D RaiseLower
+
+
+# Automatic IconBox Elements Rearrange
+  AddToFunc Deiconify-and-Rearrange
+   	+ I Iconify 
+   	+ I All (CurrentPage, Iconic) PlaceAgain Icon
+  DestroyFunc Move-or-Iconify
+  AddToFunc Move-or-Iconify
+	+ I Raise
+	+ M Move
+	+ D Deiconify-and-Rearrange
+
+# Raise & Resize / (Undo)Lower
+  DestroyFunc Resize-or-Raise
+  AddToFunc Resize-or-Raise
+	+ I Raise
+	+ M Resize
+	+ D RaiseLower
+
+# Maximize/Expand with EWMH compliance 
+  AddToFunc Max	
+  	+ C Maximize ewmhiwa 100 100
+   	+ M Maximize ewmhiwa growonlayers $[w.layer] -1 grow grow
+  AddToFunc VerMax
+    + I Maximize ewmhiwa 0 100
+  AddToFunc HorMax
+	+ I Maximize ewmhiwa 100 0
+
+# Toggle FullScreen On/Off
+  AddToFunc FullScreen
+ 	+ I ThisWindow (Maximized) Fullscreen-Stop
+	+ I TestRc (False) ThisWindow (!Maximized) FullScreen-Start
+  AddToFunc   FullScreen-Start
+	+ I ThisWindow (Maximized) WindowStyle Title, Borders
+	+ I TestRc (!Match) WindowStyle !Title, \
+	                    !Borders, FixedSize, FixedPosition
+	+ I TestRc (!Match) Raise
+	+ I TestRc (!Match) UpdateStyles
+	+ I Maximize ewmhiwa  100 100
+	+ I SetEnv CurrentWindowState_$[w.id] Maximize
+  AddToFunc FullScreen-Stop
+	+ I DestroyWindowStyle
+	+ I UpdateStyles
+	+ I ThisWindow (Maximized) Maximize
+
+# Tiling
+  AddToFunc TileLeft
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 50 100
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 +0
+  AddToFunc TileRight
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 50 100
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 +0
+  AddToFunc TileTop
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 100 50
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 +0
+  AddToFunc TileBottom
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 100 50
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 -0
+  AddToFunc TileTopLeft
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 +0
+  AddToFunc TileTopRight
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 +0
+  AddToFunc TileBottomLeft
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move +0 -0
+  AddToFunc TileBottomRight
+	+ I ThisWindow (!Shaded, !Iconic) Maximize 50 50
+	+ I ThisWindow (Maximized, !Shaded, !Iconic) Move -0 -0
+
+# Increase/Decrease Window Size by 10 lines
+  AddToFunc IncVerticalSize
+	+  I ThisWindow (!Shaded, !Iconic) Resize keep w+10c   
+  AddToFunc IncHorizontalSize
+	+  I ThisWindow (!Shaded, !Iconic) Resize w+10c keep 
+  AddToFunc DecVerticalSize
+	+  I ThisWindow (!Shaded, !Iconic) Resize keep w-10c 
+  AddToFunc DecHorizontalSize
+	+  I ThisWindow (!Shaded, !Iconic) Resize w-10c keep 
+
+# Dynamically Circulate Focus Across Windows 
+  AddToFunc Raise-and-FlipFocus 
+        + I Raise
+  		+ I FlipFocus
+  AddToFunc CirculateFocus
+	+ I Raise-and-FlipFocus
+	+ I WarpToWindow !raise 5 5
+
+# Loads the man page $0 in an terminal
+DestroyFunc ViewManPage
+AddToFunc   ViewManPage
++ I Exec exec $[infostore.terminal] -g 80x40 \
+  -n "Manual Page - $0" -T "Manual Page - $0" -e man "$0"
+
+
+# Circulate amid terminal windows
+  AddToFunc ToTerm
+	+ I   Current (State 3, "$0") Break
+	+ I   Next (State 3, "$0") FocusTerm
+  AddToFunc FocusTerm
+	+ I   Iconify False
+	+ I   Raise-and-FlipFocus
+	+ I   WarpToWindow 80 20
+
+# Go to 'x' Page (Focusing first not Iconified/Shaded Window)
+  AddToFunc GotoPageFocus
+   	+ I GotoPage $*
+  	+ I PointerWindow (CurrentPage, !Sticky, !Shaded, !Iconic) Focus
+   	+ I TestRc (!Match) Next (CurrentPage, !Sticky, \
+               !Shaded, !Iconic) Raise-and-Focus
+
+# Move 'Window' to 'x' Page, Go to $x (focusing $Window)
+  AddToFunc MoveAndGotoPage
+        + I MoveToPage $*
+  		+ I GotoPageFocus $*
+
+# Thumbnails
+  DestroyFunc Thumbnail
+  AddToFunc Thumbnail
+	+ SetEnv fvwm_thumbnailing 1
+	+ I Raise
+	+ I SetEnv Icon-$[w.id] $[w.iconfile]
+	+ I ThisWindow (!Shaded Iconifiable !Iconic) PipeRead "xwd -silent -id $[w.id] | \
+		convert -scale $$(($[w.width]/5))  -adaptive-resize 160x120^ -gravity center -crop 160x120+0+0  \
+		+repage -frame 1x1 -mattecolor black -quality 0 xwd:- png:$[FVWM_TMP]/icon.tmp.$[w.id].png && echo Nop"
+	# echo WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png || echo Nop"
+	+ I TestRc (Match) Test (f $[fvwm_icon]/$[w.iconfile], f $[FVWM_TMP]/icon.tmp.$[w.id].png) \
+		PipeRead "composite -geometry +2+4 $[fvwm_icon]/$[w.iconfile] $[FVWM_TMP]/icon.tmp.$[w.id].png \
+		$[FVWM_TMP]/icon.tmp.$[w.id].png && echo WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png || echo Nop"
+	+ I TestRc (NoMatch) WindowStyle IconOverride, Icon $[FVWM_TMP]/icon.tmp.$[w.id].png
+	+ I Iconify
+	+ SetEnv fvwm_thumbnailing 2
+  DestroyFunc DeThumbnail
+  AddToFunc DeThumbnail
+	+ I PipeRead "echo WindowStyle Icon \\$\\[Icon-$[w.id]\\]"
+	+ I UnsetEnv Icon-$[w.id]
+	+ I Exec exec rm -f $[FVWM_TMP]/icon.tmp.$[w.id].png
+
+# Window Screenshots
+  AddToFunc Screenshot
+	+ I Exec exec xwd -id $w -out $[FVWM_IMG]/$(echo shot.$(date +'%Y%M%d%H%m%S')).xwd
+    	+ I PipeRead 'for i in $[FVWM_IMG]/*; \
+	    	do sleep 1; sh $[FVWM_S]/xwd2png $i > /dev/null 2>&1; done'
+
+
+###############=
+#---- PAGER
+###############=
+DestroyModuleConfig FvwmPager: *
+	*FvwmPager: Geometry 160x90-3-3
+	*FvwmPager: Colorset * 9
+	*FvwmPager: HilightColorset * 9
+	*FvwmPager: BalloonColorset * 9
+	*FvwmPager: BalloonBorderWidth 1
+	*FvwmPager: BalloonStringFormat %i
+	*FvwmPager: WindowColorsets 3 10
+	*FvwmPager: Font "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+	*FvwmPager: Balloons All
+	*FvwmPager: BalloonFont "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+	*FvwmPager: BallonYOffset +2
+	*FvwmPager: UseSkipList
+	*FvwmPager: Rows 1
+	#*FvwmPager: SmallFont 5x8
+
+
+###############=
+#---- ICONBOX
+###############=
+Style * IconBox 48x762+3+3, IconFill Left Top, IconGrid 10 10, \
+        IconTitleFormat %i, IconTitleRelief, IconBackgroundRelief 1, \
+        IconBackgroundPadding 0, IconSize -1 -1, IconTitleColorset 6, \
+        IconBackgroundColorset 6, HilightIconTitleColorset 8, \
+		IconFill top bottom
+
+# Icons Style
+Style * IconFont "-artwiz-nu-medium-r-normal--11-110-75-75-p-90-iso10646-1"
+Style * StickyIcon, !StickyStippledIconTitle
+
+# Custom Icons
+Style XTerm 	IconOverride, Icon xterm2.xpm, State 3
+Style URxvt     IconOverride, Icon term.xpm, State 3
+Style  Seamonkey 	IconOverride, Icon netscape3.xpm
+Style Pcmanfm	IconOverride, Icon xfm_icon.xpm
+Style nnn	IconOverride, Icon xfm_icon.xpm
+Style slrn      IconOverride, Icon xnews.xpm
+Style zathura   IconOverride, Icon Document.xpm
+Style irssi	IconOverride, Icon netdup.xpm
+Style mutt	IconOverride, Icon mail2.xpm
+Style Thunderbird  IconOverride, Icon mail2.xpm
+Style cmus	IconOverride, Icon MusicSound.dir.xpm
+
+
+###############=
+#---- ANIMATIONS
+###############=
+SetAnimation 10 -.01 0 .01 .03 .08 .18 .3 \
+  .45 .6 .75 .85 .90 .94 .97 .99 1.0
+
+*FvwmAnimate:	Effect	Twist
+*FvwmAnimate:	Width   1
+*FvwmAnimate:	Color	grey
+*FvwmAnimate:   Iterations 16
+*FvwmAnimate:	Delay	3
+*FvwmAnimate:   Twist 6
+
+###############=
+#---- MOUSE BINDINGS
+###############=
+
+#---  	[But][Context][Mod]		[Action]
+
+# Root Window (Desktop):
+  Mouse	    	1	R 		A	Menu RootMenu Nop
+  Mouse 	3	R 		A   	PickWindow
+  Mouse		2	R		A	FvwmExpose
+
+# TitleBar Buttons:
+  Mouse 	0 	1   	A       Menu Window-Ops
+  Mouse 	1 	2   	A       Max
+  Mouse 	3 	2   	A       ThisWindow (Maximized) Maximize false
+  Mouse 	0 	2   	M       FullScreen
+  Mouse 	0 	3   	A       MoveLower
+  Mouse 	0 	4   	A       Iconify
+
+
+# Borders/Icons:
+  Mouse 	1	FS 		A       Resize-or-Raise
+  Mouse 	1	TS 		A       Move-or-Raise
+  Mouse 	1	I 		A       Move-or-Iconify
+  Mouse 	3	I 		A       Deiconify-and-Rearrange
+  Mouse 	3	FST 		A       Menu Window-Ops Nop
+  Mouse 	2	TSIF 		A       RaiseLower
+
+
+# Scrollwheel to go up/down Pages
+  Mouse 	4 	R   	A   	GotoPageFocus +0p -1p
+  Mouse 	5 	R   	A   	GotoPageFocus +0p +1p
+
+
+# Scrollwheel (+S) to go left/right Pages
+  Mouse 	4 	R   	S   	GotoPageFocus +1p -0p
+  Mouse 	5 	R   	S   	GotoPageFocus -1p +0p
+
+
+# Mouse-grab with Alt for various Window-Ops
+  Mouse 	1 	W 	M   	Move-or-Raise
+  Mouse 	3 	W 	M   	Resize-or-Raise
+  Mouse		3	W   	C 	Menu Window-Ops Nop 
+  Mouse 	1 	W 	4M      Thumbnail
+  Mouse 	3 	W 	4M      Max
+  Mouse     	3	W	SM      Fullscreen
+  Mouse	    	1	W	SM	RaiseLower
+  Mouse     	1   	W   	CM      Iconify
+  Mouse	    	3	W	CM      WindowShade
+  Mouse		1	W	C4M     Stick
+  Mouse		3	W	C4M     Close
+  Mouse		1	W	S4M	Title
+
+###############=
+#---- KEY BINDINGS
+###############=
+
+#---           [Key][Context][Mod]    [Action]
+
+# Alt + Arrow 		| Moves window by 15 pixels 
+  Key           Left    A     M       Move w-15p w+0p
+  Key           Right   A     M       Move w+15p w+0p
+  Key           Up      A     M       Move w+0p w-15p
+  Key           Down    A     M       Move w+0p w+15p
+
+
+# Ctrl-Alt + Arrow 	| Resizes window by 10 pixels 
+  Key           Left    A       CM      DecHorizontalSize
+  Key           Right   A       CM      IncHorizontalSize
+  Key           Up      A       CM      DecVerticalSize
+  Key           Down    A       CM      IncVerticalSize
+
+# Shift + Arrow 	| Scrolls by 1 page.
+  Key           Left	A	S	Scroll -100 0
+  Key           Right	A	S	Scroll +100 +0
+  Key           Up      A	S	Scroll +0 -100
+  Key           Down	A	S	Scroll +0 +100
+
+# Ctrl + Arrow 		| Scrolls by 1/10 of a page.
+  Key 		Left	A	C	Scroll -10 +0
+  Key 		Right	A	C	Scroll +10 +0
+  Key 		Up		A	C	Scroll +0  -10
+  Key 		Down	A	C	Scroll +0  +10
+
+# Ctrl-Super + Arrow 	| Moves the pointer by 1% of a page.
+  Key 		Left	A       C4	CursorMove -1 0
+  Key 		Right	A       C4 	CursorMove +1 +0
+  Key 		Up	A	C4	CursorMove +0 -1
+  Key 		Down	A	C4	CursorMove +0 +1
+
+# Ctrl-Alt-Super + Arrow | Moves the pointer by 1/10 of a page.
+  Key 		Left	A 	CM4	CursorMove -10 +0
+  Key 		Right	A	CM4	CursorMove +10 +0
+  Key 		Up	A	CM4	CursorMove +0 -10
+  Key 		Down	A   	CM4	CursorMove +0 +10
+
+# Shift-Alt + Arrow 	| Moves windows to different pages
+  Key 		Up		A	MoveToPage +0p -1p
+  Key 		Right 	A 	SM  	MoveToPage +1p +0p
+  Key 		Left  	A 	SM 	MoveToPage -1p +0p
+  Key 		Down  	A 	SM 	MoveToPage +0p +1p
+
+# Ctrl-Shift-Alt + Arrow | Moves window to page, goes to $page focusing $window
+  Key 		Up 		A 	CSM 	MoveAndGotoPage +0p -1p
+  Key 		Right 	A 	CSM 	MoveAndGotoPage +1p +0p
+  Key 		Left 	A 	CSM 	MoveAndGotoPage -1p +0p
+  Key 		Down 	A 	CSM 	MoveAndGotoPage +0p +1p
+
+
+# Super + Arrow  	| Tiles window to half screen
+  Key 		Left  	A 	4 	TileLeft
+  Key 		Right 	A 	4 	TileRight
+  Key 		Up    	A 	4 	TileTop
+  Key 		Down  	A 	4 	TileBottom
+
+# Super-Shift + Arrow 	| Tiles window to screen quarter
+  Key 		Up     	A 	S4 	TileTopLeft
+  Key 		Left    A 	S4 	TileBottomLeft
+  Key 		Right   A 	S4 	TileTopRight
+  Key 		Down    A 	S4 	TileBottomRight
+
+# Alt + Tab 		| Cycles between windows 
+  Key 		Tab 	A 	M 	Next (CurrentPage, !Iconic, !Shaded, \
+                                      	 AcceptsFocus) CirculateFocus
+  Key 		Tab 	A 	SM 	Prev (CurrentPage, !Iconic, !Shaded, \
+					 AcceptsFocus) CirculateFocus
+# Alt + t 		| Cycles between terminal emulators
+  Key		t		M	ToTerm
+
+# Alt + x               | Kills a window
+  Key       	x       A   	M   	Close
+
+# Function Keys bindings
+  Key 		F1	A   	C    	PickWindow
+  Key 		F2	A	C       Iconify
+  Key 		F3	A	C       Thumbnail
+  Key 		F4	A	C       Max
+  Key 		F5	A	C       VerMax
+  Key 		F6	A	C       HorMax
+  Key 		F7	A	C       TileLeft
+  Key 		F8	A	C       TileRight
+  Key 		F9	A	C       Module FvwmIdent
+  Key 		F10 	A   	C       Close
+  Key 		F11 	A   	C       FullScreen
+  Key 		F12 	A   	C    	Restart
+ 
+# Misc additional bindings
+  Key		f	A	M	Fullscreen
+  Key 		m	A 	M   	Max
+  Key		v	A	M	VerMax
+  Key		b	A	M	HorMax
+  Key   	Return  I   	N   	Deiconify-and-Rearrange
+  Key   	Return  A   	M   	Exec exec $[infostore.terminal]
+
+
+#--- Script Bindings
+# Mod4 + w | Changes root background image
+  Key		w	A	4   Exec exec /bin/sh $[FVWM_S]/randombg
+
+# Mod4 + s | Takes a window screenshot
+  Key		s	A	4	Screenshot
+
+# Mod4 + r | Renames a window
+  Key 		r	A   4   Exec exec /bin/sh $[FVWM_S]/title
+
+# Mod4 + c  | Exports primary CLIPBOARD content to plain text file 
+#  	      Also echo the recorded entry to a notification daemon
+  Key		c	A   4   Exec exec /bin/sh $[FVWM_S]/savexclip
+
+# Mod4 + k | Changes Keyboard Layout
+  Key		k	A	4   Exec exec /bin/sh $[FVWM_S]/changexkbmap
+
+# Mod4 + v | Displays Volume Level
+  Key		v	A	4   Exec exec /bin/sh $[FVWM_S]/vol
+
+# Xf86/Fn Keyboard Symbols bindings
+# Remember to set SUDO_ASKPASS=/usr/pkg/bin/ssh-askpass for password prompt to work 
+  Key XF86AudioMute 	     A 	N 	Exec exec mixerctl -w outputs.master=0,0 
+  Key XF86AudioLowerVolume   A 	N 	Exec exec mixerctl -w outputs.master-=5,5 
+  Key XF86AudioRaiseVolume   A 	N 	Exec exec mixerctl -w outputs.master+=5,5 
+ 
+  Key XF86AudioPlay          A 	N 	Exec exec mpc play > /dev/null 2>&1
+  Key XF86AudioStop          A 	N 	Exec exec mpc pause > /dev/null 2>&1
+  Key XF86AudioPrev          A 	N 	Exec exec mpc prev > /dev/null 2>&1
+  Key XF86AudioNext          A 	N 	Exec exec mpc next > /dev/null 2>&1  
+  Key XF86MonBrightnessUp    A 	N 	Exec exec sudo --askpass sysctl -w \
+  					hw.acpi.acpiout0.brightness=100 > /dev/null 2>&1
+  Key XF86MonBrightnessDown  A 	N	Exec exec sudo --askpass sysctl -w \
+					hw.acpi.acpiout0.brightness=70 > /dev/null 2>&1
+  Key XF86WWW                A 	N 	Exec exec seamonkey 
+  Key XF86Terminal           A 	N 	Exec exec env ENV=$HOME/.profile xterm 
+  Key XF86Mail               A 	N 	Exec exec urxvt -e neomutt 
+  Key XF86Sleep              A 	N 	Exec exec sudo --askpass sysctl -w \
+					hw.acpi.sleep.state=3 > /dev/null 2>&1
+  Key XF86LogOff             A 	N 	Exec exec xlock -name $HOME/.Xresources 
+  Key Print		     A	C 	Exec exec /bin/sh  $[FVWM_S]/dumproot 2>&1
+
+# Application Shortcuts
+  Key           l       A       4       Exec exec $[infostore.runcmd] 
+  Key           e       A       4       Exec exec $[infostore.terminal] -g 108x49 -e vim
+  Key           m       A       4       Exec exec $[infostore.terminal] -name mutt -e neomutt
+  Key           f       A       4       Exec exec $[infostore.terminal] -name mc -e mc
+  Key           p       A       4       Exec exec $[infostore.terminal] -name ncmpc++ -e ncmpcpp
+  Key           u       A       4       Exec exec $[infostore.browser]
+  Key           t       A       4       Exec exec $[infostore.terminal]
+
+###############
+#---- Menus
+###############=
+
+# Generate XDGMenu
+PipeRead "fvwm-menu-desktop -e"
+
+# Read previously generated XDGMenu
+#Read $[FVWM_USERDIR]/.XDGMenu 
+
+# Main Menu
+  AddToMenu RootMenu "Fvwm Menu" Title
+	+ "&Terminal"		Exec exec $[infostore.terminal]
+	+ "&Launcher"         	Exec exec $[infostore.runcmd]
+	+ "&Web &Broswer"	Exec exec $[infostore.browser]
+	+ "&Applications"     	Popup XDGMenu
+	+ ""                    Nop
+	+ "&Man Pages" 		Popup FvwmManPages
+	+ "Fvwm&Console" Module FvwmConsole -terminal $[infostore.terminal]
+	+ "&Window Ops"         Popup Window-Ops
+	+ "&X11 Session"      	Popup X11-Session
+
+  AddToMenu "Window-Ops"
+  	+ "&Move"               Move
+	+ "&Resize"             Resize
+	+ "&Shade"              WindowShade
+	+ "&TileLeft"           TileLeft
+	+ "&TileRight"          TileRight
+	+ "&Stick"              Stick
+	+ "&Send To" 		Popup SendToPage
+	+ ""                    Nop  
+	+ "&Stays On Top" 	Pick (CirculateHit) Layer 0 6
+	+ "&Stays Put" 		Pick (CirculateHit) Layer 0 4
+	+ "&Stays On Bottom"    Pick (CirculateHit) Layer 0 2
+	+ "" 			Nop
+	+ "&Identify"           Module FvwmIdent
+        + ""                    Nop
+	+ "&Close"              Close
+	+ "&Kill"               Destroy
+
+  AddToMenu  "SendToPage"
+	+ "Page (0,0)"  MoveToPage 0 0
+	+ "Page (0,1)"  MoveToPage 0 1
+	+ "Page (1,0)"  MoveToPage 1 0
+	+ "Page (1,1)"  MoveToPage 1 1
+
+
+# Fvwm Man Pages (Help) Menu
+  AddToMenu   FvwmManPages "Help" Title
+	+ "fvwm"                ViewManPage fvwm
+	+ "FvwmAnimate"         ViewManPage FvwmAnimate
+	+ "FvwmAuto"            ViewManPage FvwmAuto
+	+ "FvwmBacker"          ViewManPage FvwmBacker
+	+ "FvwmButtons"         ViewManPage FvwmButtons
+	+ "FvwmCommand"         ViewManPage FvwmCommand
+	+ "FvwmConsole"         ViewManPage FvwmConsole
+	+ "FvwmEvent"           ViewManPage FvwmEvent
+	+ "FvwmIconMan"         ViewManPage FvwmIconMan
+	+ "FvwmIdent"           ViewManPage FvwmIdent
+	+ "FvwmPager"           ViewManPage FvwmPager
+	+ "FvwmPerl"            ViewManPage FvwmPerl
+	+ "FvwmProxy"           ViewManPage FvwmProxy
+	+ "FvwmRearrange"       ViewManPage FvwmRearrange
+	+ "FvwmScript"          ViewManPage FvwmScript
+	+ "" Nop
+	+ "fvwm-root"           ViewManPage fvwm-root
+	+ "fvwm-menu-desktop"   ViewManPage fvwm-menu-desktop
+	+ "fvwm-menu-directory" ViewManPage fvwm-menu-directory
+	+ "fvwm-menu-xlock"     ViewManPage fvwm-menu-xlock
+	+ "fvwm-config"         ViewManPage fvwm-confi
+  
+  AddToMenu "X11-Session"
+	+ "Refresh Screen"     Refresh
+	+ "Restart WM"         Restart
+	+ "Lock Screen"        Exec exec xlock -name ~/.Xresources
+	+ "Exit FVWM"          Module FvwmScript FvwmScript-ConfirmQuit
+	+ ""                   Nop
+	+ "Reboot System"      Exec exec sudo --askpass reboot	
+	+ "Shutdown System"    Exec exec sudo --askpass poweroff 
