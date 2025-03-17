@@ -1,0 +1,10 @@
+{
+	"module": {
+		"name": "fvwm",
+		"items": [
+			{ "src": "config", "dst": "~/.fvwm", "install_type": "link" }
+		],
+		"dependencies": [ "fvwm", "unzip", "wget" ],
+		"postInstallScripts": [ "install_fonts.sh" ]
+	}
+}

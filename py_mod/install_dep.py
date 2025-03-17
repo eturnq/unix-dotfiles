@@ -79,6 +79,8 @@ pkg_name = {
         "fvwm": "fvwm3",
         "git": "git",
         "tmux": "tmux",
+        "unzip": "unzip",
+        "wget": "wget",
         "xterm": "xterm",
         "zsh": "zsh"
     }
@@ -102,6 +104,7 @@ def install_package(names):
         return DepResponse(False, "No supported package found.")
 
     pkg_list = list(filter(lambda pkg: pkg in pkg_names.keys(), names))
+    pkg_list = [pkg_names[pkg] for pkg in pkg_list]
     full_cmd = pkg_names["command"].format(pkgmgr, " ".join(pkg_list))
     print("Executing \"{}\"".format(full_cmd))
     subprocess.run(full_cmd.split())
