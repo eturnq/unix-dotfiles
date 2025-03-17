@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path as FsItem
 from shutil  import copyfile
 import subprocess
+import zipfile
 
 class DepResponse:
     def __init__(self, success, message=""):
@@ -66,9 +67,25 @@ def install_link(source, target):
     return install_file(source, target, True)
 
 def install_archive(source, target):
-    _ = source 
-    _ = target
-    print("Unimplemented")
+    src = FsItem(source).expanduser().resolve() # DO resolve symlinks
+    tgt = FsItem(target).expanduser().resolve() # DO resolve symlinks
+
+    if not src.exists():
+        print("src does not exist")
+        return False 
+
+    if src.suffix == ".zip":
+        with zipfile.ZipFile(src) as archive:
+            for name in archive.namelist():
+                with archive.open(name) as file:
+                    dst = tgt / name
+                    dst.parent.mkdir(parents=True, exist_ok=True)
+                    print("Writing to {}".format(dst))
+                    dst.write_bytes(file.read())
+        return True
+    else:
+        print("Unsupported archive format.")
+
     return False
 
 pkg_name = {
