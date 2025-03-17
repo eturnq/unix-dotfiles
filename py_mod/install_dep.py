@@ -82,7 +82,7 @@ pkg_name = {
         "tmux": "tmux",
         "unzip": "unzip",
         "wget": "wget",
-        "x11-server-utils": "x11-server-utils",
+        "x11-xserver-utils": "x11-xserver-utils",
         "xinit": "xinit",
         "xterm": "xterm",
         "zsh": "zsh"

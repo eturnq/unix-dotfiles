@@ -5,7 +5,7 @@
 			{ "src": "config", "dst": "~/.fvwm", "install_type": "link" },
 			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
 		],
-		"dependencies": [ "bash-completion", "fvwm", "unzip", "wget", "x11-server-utils", "xinit", "xterm" ],
+		"dependencies": [ "bash-completion", "fvwm", "unzip", "wget", "x11-xserver-utils", "xinit", "xterm" ],
 		"postInstallScripts": [ "setup.sh" ]
 	}
 }
