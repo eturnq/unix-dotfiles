@@ -74,6 +74,7 @@ def install_archive(source, target):
 pkg_name = {
     "apt-get": {
         "command": "sudo {} install -y {}",
+        "bash-completion": "bash-completion",
         "build-essential": "build-essential",
         "cmake": "cmake",
         "fvwm": "fvwm3",
@@ -81,6 +82,7 @@ pkg_name = {
         "tmux": "tmux",
         "unzip": "unzip",
         "wget": "wget",
+        "x11-server-utils": "x11-server-utils",
         "xinit": "xinit",
         "xterm": "xterm",
         "zsh": "zsh"
