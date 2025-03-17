@@ -14,4 +14,3 @@ popd
 rm /tmp/Noto.zip
 
 fc-cache
-xrdb $(HOME)/.Xresources
