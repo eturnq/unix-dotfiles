@@ -2,9 +2,10 @@
 	"module": {
 		"name": "fvwm",
 		"items": [
-			{ "src": "config", "dst": "~/.fvwm", "install_type": "link" }
+			{ "src": "config", "dst": "~/.fvwm", "install_type": "link" },
+			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
 		],
-		"dependencies": [ "fvwm", "unzip", "wget" ],
+		"dependencies": [ "fvwm", "unzip", "wget", "xinit" ],
 		"postInstallScripts": [ "install_fonts.sh" ]
 	}
 }
