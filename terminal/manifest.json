@@ -1,0 +1,8 @@
+{
+	"module": {
+		"name": "terminal",
+		"items": [ 
+			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" }
+		]
+	}
+}

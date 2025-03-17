@@ -35,7 +35,7 @@ def install_file(source, target, is_link=False):
 
     src = FsItem(source).expanduser().resolve() # DO resolve symlinks
     tgt = FsItem(target).expanduser() # Do NOT resolve symlinks
-    
+
     if not src.exists():
         return DepResponse(False, "{} doesn't exist".format(source))
 
@@ -62,6 +62,7 @@ def install_file(source, target, is_link=False):
     return DepResponse(success, message)
 
 def install_link(source, target):
+    print("Entering install_link...")
     return install_file(source, target, True)
 
 pkg_name = {
