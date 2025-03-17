@@ -1,0 +1,21 @@
+xterm*dynamicColors:	true
+xterm*background:	    black
+xterm*foreground:	    grey
+xterm*saveLines: 	    35000
+xterm*faceName:		    NotoMonoNerdFontMono
+xterm*faceSize:		    10
+xterm*selectToClipboard: true
+
+urxvt*dynamicColors:	true
+urxvt*background:	black
+urxvt*foreground:	grey
+urxvt*saveLines: 	35000
+urxvt*font: xft:NotoMono\ Nerd\ Font\ Mono:size=10
+urxvt*scrollBar:  false
+
+x-terminal-emulator*dynamicColors:	true
+x-terminal-emulator*background:	black
+x-terminal-emulator*foreground:	grey
+x-terminal-emulator*saveLines: 	35000
+x-terminal-emulator*font: xft:NotoMono\ Nerd\ Font\ Mono:size=10
+x-terminal-emulator*scrollBar:  false

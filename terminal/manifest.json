@@ -2,7 +2,9 @@
 	"module": {
 		"name": "terminal",
 		"items": [ 
-			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" }
-		]
+			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" },
+			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
+		],
+		"dependencies": [ "xterm", "tmux" ]
 	}
 }

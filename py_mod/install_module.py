@@ -4,11 +4,11 @@ from json import loads as load_json
 from py_mod.install_dep import install_link # type: ignore
 from py_mod.install_dep import install_file # type: ignore
 
-#from py_lib.install_dep import install_package # type: ignore
+from py_mod.install_dep import install_package # type: ignore
 #import fs_item_exists from install_dep
 
 def manifest_is_valid(manifest):
-    return "module" in manifest  and "items" in manifest["module"]
+    return "module" in manifest and "items" in manifest["module"] and "dependencies" in manifest["module"]
 
 def read_manifest_file(filename):
     try:
@@ -78,18 +78,28 @@ class Module:
         return self._path
 
     def name(self):
-        if self.is_valid(): # self_manifest can't be None if valid
+        if self.is_valid(): # self._manifest can't be None if valid
             return self._manifest["module"]["name"] # type: ignore
         return None
 
     def items(self):
         return self._items
 
+    def dependencies(self):
+        if self.is_valid(): # self._manifest can't be None if valid
+            return self._manifest["module"]["dependencies"] # type: ignore
+        return []
+
     def do_install(self):
         if not self.is_valid():
             return False
 
         print("Installing module {}...".format(self.name()))
+
+        print("Installing dependencies...")
+        if not install_package(self.dependencies()):
+            return False
+
         for item in self._items:
             if not item.do_install():
                 return False
@@ -100,5 +110,4 @@ def get_modules():
     thisdir = FsItem(".").resolve().iterdir()
     childdirs = [child for child in thisdir if child.is_dir()]
     raw_modules = [Module(child) for child in childdirs]
-    print("Debug: raw_modules {}".format(raw_modules))
     return [child for child in raw_modules if child.is_valid()]

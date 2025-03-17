@@ -517,6 +517,10 @@ Silent Key T 	     A M Exec exec $[infostore.terminal]
 Silent Key E 	     A M Exec exec $[infostore.filebrowser]
 Silent Key F 	     A M Maximize fullscreen
 Silent Key F4	     A M Close
+Silent Key XF86AudioRaiseVolume A A Exec exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+Silent Key XF86AudioLowerVolume A A Exec exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+Silent Key XF86AudioMute A A Exec exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+Silent Key XF86AudioMicMute A A Exec exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
 Silent Key Return  A M Exec exec $[infostore.terminal]
 Test (x $[infostore.runcmd]) Silent Key Space A M Exec exec $[infostore.runcmd] $[infostore.runcmdopt]
 

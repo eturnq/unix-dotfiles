@@ -68,8 +68,10 @@ def install_link(source, target):
 pkg_name = {
     "apt-get": {
         "command": "sudo {} install -y {}",
-        "zsh": "zsh",
-        "git": "git"
+        "git": "git",
+        "tmux": "tmux",
+        "xterm": "xterm",
+        "zsh": "zsh"
     }
 }
 
