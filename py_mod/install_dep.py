@@ -74,6 +74,9 @@ def install_archive(source, target):
 pkg_name = {
     "apt-get": {
         "command": "sudo {} install -y {}",
+        "build-essential": "build-essential",
+        "cmake": "cmake",
+        "fvwm": "fvwm3",
         "git": "git",
         "tmux": "tmux",
         "xterm": "xterm",
