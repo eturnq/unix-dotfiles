@@ -1,10 +1,8 @@
 import subprocess
 
-from os.path import join as join_path
-from os.path import realpath as real_path
-from os.path import expanduser as user_path
 from pathlib import Path as FsItem
 from shutil  import copyfile
+import subprocess
 
 class DepResponse:
     def __init__(self, success, message=""):
@@ -24,18 +22,20 @@ def exe_in_path(exe):
 
 def fs_item_exists(fs_item):
     try:
-        stat = fs_item.lstat()
+        _ = fs_item.lstat()
         return True
     except Exception as e:
+        _ = e
         return False
 
 def install_file(source, target, is_link=False):
     success = True
     message = "{} {} to {}".format("{}", source, target)
 
-    src = FsItem(source)
-    tgt = FsItem(target)
 
+    src = FsItem(source).expanduser().resolve() # DO resolve symlinks
+    tgt = FsItem(target).expanduser() # Do NOT resolve symlinks
+    
     if not src.exists():
         return DepResponse(False, "{} doesn't exist".format(source))
 
@@ -44,7 +44,8 @@ def install_file(source, target, is_link=False):
         user_input = input("Overwrite? (yes/no[default]): ").lower()
         is_affirm = user_input == "yes" or user_input == "y"
         if not is_affirm: return DepResponse(True, "Not overwriting target")
-        tgt.unlink()
+
+        tgt.unlink(missing_ok=True)
 
     try:
         if is_link:
@@ -63,4 +64,32 @@ def install_file(source, target, is_link=False):
 def install_link(source, target):
     return install_file(source, target, True)
 
-        
+pkg_name = {
+    "apt-get": {
+        "command": "sudo {} install -y {}",
+        "zsh": "zsh",
+        "git": "git"
+    }
+}
+
+def get_package_manager():
+    supported = list(pkg_name.keys())
+    return next(filter(lambda pkg: exe_in_path(pkg), supported), None)
+
+def install_package(names):
+    pkgmgr = get_package_manager()
+    if pkgmgr is None:
+        return DepResponse(False, "No supported package manager found.")
+
+    pkg_names = None
+
+    try:
+        pkg_names = pkg_name[pkgmgr]
+    except Exception as e:
+        _ = e
+        return
+
+    pkg_list = list(filter(lambda pkg: pkg in pkg_names.keys(), names))
+    full_cmd = pkg_names["command"].format(pkgmgr, " ".join(pkg_list))
+    print("Executing \"{}\"".format(full_cmd))
+    subprocess.run(full_cmd.split())
