@@ -366,6 +366,9 @@ AddToMenu   BGMenu "$[gt.Wallpapers]" Title
 + "$[gt.Floral]%bgicons/bg1.png%"  SetBG bg1.png
 + "$[gt.Circles]%bgicons/bg2.png%" SetBG bg2.png
 + "$[gt.Space]%bgicons/bg3.png%"   SetBG bg3.png
++ "$[gt.Diamonds]%./images/bgicons/diamonds.png%"               SetBG diamonds.png
++ "$[gt.Scatter Classic]%./images/bgicons/scatter-classic.png%" SetBG scatter-classic.png
++ "$[gt.Scatter Purple]%./images/bgicons/scatter-purple.png%"   SetBG scatter-purple.png
 
 # Window Operations Menus
 DestroyMenu MenuWindowOps
