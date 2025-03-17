@@ -2,9 +2,10 @@
 	"module": {
 		"name": "terminal",
 		"items": [ 
-			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" },
-			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
+			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" }
 		],
-		"dependencies": [ "xterm", "tmux" ]
+		"dependencies": [ "tmux", "zsh" ],
+		"preInstallScripts": [],
+		"postInstallScripts": [ "setup_zsh.sh" ]
 	}
 }

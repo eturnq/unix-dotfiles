@@ -1,11 +1,9 @@
-from pathlib import Path as FsItem
 from json import loads as load_json
+from pathlib import Path as FsItem
+import subprocess
 
-from py_mod.install_dep import install_link # type: ignore
-from py_mod.install_dep import install_file # type: ignore
-
+from py_mod.install_dep import install_archive, install_file, install_link # type: ignore
 from py_mod.install_dep import install_package # type: ignore
-#import fs_item_exists from install_dep
 
 def manifest_is_valid(manifest):
     return "module" in manifest and "items" in manifest["module"] and "dependencies" in manifest["module"]
@@ -23,6 +21,8 @@ def dir_is_module(dir):
     return read_manifest_file(dir / "manifest.json") is not None
 
 class ModuleItem:
+    _install_types = [ "link", "copy", "extract" ]
+
     def __init__(self, path, item_dict):
         self._path = path
 
@@ -36,10 +36,10 @@ class ModuleItem:
         else:
             self._dst = None
 
-        if "install_type" in item_dict:
-            self._inst = item_dict["install_type"] != "link"
+        if "install_type" in item_dict and item_dict["install_type"] in self._install_types:
+            self._inst = item_dict["install_type"]
         else:
-            self._inst = True
+            self._inst = "copy"
 
     def is_valid(self):
         return self._src is not None and self._dst is not None
@@ -50,26 +50,40 @@ class ModuleItem:
     def destination(self):
         return self._dst
 
-    def is_full_install(self):
+    def install_type(self):
         return self._inst
 
     def do_install(self):
         if not self.is_valid():
+            print("Item is not valid")
             return False
 
-        if self._inst:
+        if self._inst == "copy":
             print("Full install {} to {}...".format(self._src, self._dst))
             return install_file(str(self._path / self._src), self._dst)
-        else:
+        elif self._inst == "link":
             print("Linking {} to {}...".format(self._src, self._dst))
             return install_link(str(self._path / self._src), self._dst)
+        else:
+            print("Extracting {} to {}...".format(self._src, self._dst))
+            return install_archive(str(self._path / self._src), self._dst)
+
+def is_item_in_module(module, item):
+    return module is not None and "module" in module and item in module["module"]
+
+def get_module_item(module, item):
+    return module["module"][item] if is_item_in_module(module, item) else None
 
 class Module:
     def __init__(self, path: FsItem):
         self._manifest = read_manifest_file(path / "manifest.json")
         self._path = path
+
         items = [ModuleItem(path, item) for item in self._manifest["module"]["items"]] if self._manifest is not None else []
         self._items = list(filter(lambda item: item.is_valid(), items))
+
+        self._preInst = get_module_item(self._manifest, "preInstallScripts")
+        self._postInst = get_module_item(self._manifest, "postInstallScripts")
 
     def is_valid(self):
         return self._manifest is not None and manifest_is_valid(self._manifest)
@@ -90,20 +104,33 @@ class Module:
             return self._manifest["module"]["dependencies"] # type: ignore
         return []
 
+    def preInstallScripts(self):
+        return self._preInst if self._preInst is not None else []
+
+    def postInstallScripts(self):
+        return self._postInst if self._postInst is not None else []
+
     def do_install(self):
         if not self.is_valid():
+            print("Module is not valid")
             return False
 
         print("Installing module {}...".format(self.name()))
 
+        for cmd in self.preInstallScripts():
+            subprocess.run([str(self._path / cmd)])
+
         print("Installing dependencies...")
-        if not install_package(self.dependencies()):
+        if not install_package(self.dependencies()).success:
             return False
 
         for item in self._items:
             if not item.do_install():
                 return False
         
+        for cmd in self.postInstallScripts():
+            subprocess.run([str(self._path / cmd)])
+
         return True
     
 def get_modules():

@@ -65,6 +65,12 @@ def install_link(source, target):
     print("Entering install_link...")
     return install_file(source, target, True)
 
+def install_archive(source, target):
+    _ = source 
+    _ = target
+    print("Unimplemented")
+    return False
+
 pkg_name = {
     "apt-get": {
         "command": "sudo {} install -y {}",
@@ -90,9 +96,11 @@ def install_package(names):
         pkg_names = pkg_name[pkgmgr]
     except Exception as e:
         _ = e
-        return
+        return DepResponse(False, "No supported package found.")
 
     pkg_list = list(filter(lambda pkg: pkg in pkg_names.keys(), names))
     full_cmd = pkg_names["command"].format(pkgmgr, " ".join(pkg_list))
     print("Executing \"{}\"".format(full_cmd))
     subprocess.run(full_cmd.split())
+    # TODO: capture if install was successful
+    return DepResponse(True, "")

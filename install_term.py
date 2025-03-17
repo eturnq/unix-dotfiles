@@ -34,8 +34,6 @@ def main():
         else:
             print("Error installing {}.".format(m.name()))
 
-    #print("Install .tmux.conf")
-    #if not install_link("terminal/.tmux.conf", "~/.tmux.conf"): return -1
     print("Install nvim config")
     if not install_link("nvim", "~/.config/nvim"): return -1
     install_package(["git","zsh"])
