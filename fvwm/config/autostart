@@ -1,0 +1,7 @@
+#!/bin/bash
+# Put universal startup things here
+
+# Put user start things in the $FVWM_USERDIR/startup directory
+for file in $FVWM_USERDIR/startup/*; do
+	$file;
+done
