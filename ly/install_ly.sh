@@ -18,6 +18,6 @@ git clone https://codeberg.org/AnErrupTion/ly $SRCDIR
 
 pushd $SRCDIR
 	git pull
-	$HOME/.local/bin/zig build $INISVC
+	$HOME/.local/bin/zig build $INITSVC
 	sudo $HOME/.local/bin/zig build installexe
 popd
