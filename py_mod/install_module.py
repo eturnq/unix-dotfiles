@@ -91,7 +91,7 @@ class InstallArtifact:
             path = FsItem(self._name).expanduser().resolve() # type: ignore
             return fs_item_exists(path)
         elif self._type == "path":
-            return exe_in_path(self._name)
+            return exe_in_path(self._name).success
 
         return False
 
