@@ -1,6 +1,6 @@
 #!/bin/bash
 
-USER = $(id -un)
+USER=$(id -un)
 pushd /usr/src
 	sudo mkdir neovim
 	sudo chown $USER:$USER neovim
