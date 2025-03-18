@@ -5,6 +5,8 @@
 			{ "src": "config", "dst": "~/.config/nvim", "install_type": "link" }
 		],
 		"dependencies": [ "build-essential", "cmake", "git" ],
-		"postInstallScripts": [ "build_neovim.sh" ]
+		"moduleDependencies": [ "nvm", "terminal" ],
+		"postInstallScripts": [ "build_neovim.sh" ],
+		"installArtifact": { "name": "nvim", "type": "path" }
 	}
 }

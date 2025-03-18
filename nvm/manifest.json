@@ -1,0 +1,8 @@
+{
+	"module": {
+		"name": "nvm",
+		"items": [],
+		"dependencies": [ "bash", "curl" ],
+		"postInstallScripts": [ "install_nvm.sh" ]
+	}
+}

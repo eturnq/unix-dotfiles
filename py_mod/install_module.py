@@ -2,8 +2,8 @@ from json import loads as load_json
 from pathlib import Path as FsItem
 import subprocess
 
-from py_mod.install_dep import install_archive, install_file, install_link # type: ignore
-from py_mod.install_dep import install_package # type: ignore
+from py_mod.install_dep import install_archive, install_file, install_link, install_package # type: ignore
+from py_mod.install_dep import exe_in_path, fs_item_exists # type: ignore
 
 def manifest_is_valid(manifest):
     return "module" in manifest and "items" in manifest["module"] and "dependencies" in manifest["module"]
@@ -68,6 +68,33 @@ class ModuleItem:
             print("Extracting {} to {}...".format(self._src, self._dst))
             return install_archive(str(self._path / self._src), self._dst)
 
+class InstallArtifact:
+    _artifact_types = [ "file", "path" ]
+
+    def __init__(self, artifact_dict):
+        self._artifact_dict = artifact_dict
+        self._name = artifact_dict["name"] if artifact_dict is not None and "name" in artifact_dict else None
+        self._type = artifact_dict["type"] if artifact_dict is not None and "type" in artifact_dict else None
+
+    def name(self):
+        return self._name
+
+    def is_valid(self):
+        items = [ self._artifact_dict, self._name, self._type ]
+        return all(x is not None for x in items)
+
+    def is_present(self):
+        if not self.is_valid(): # if valid, then no properties will be None
+            return False
+
+        if self._type == "file":
+            path = FsItem(self._name).expanduser().resolve() # type: ignore
+            return fs_item_exists(path)
+        elif self._type == "path":
+            return exe_in_path(self._name)
+
+        return False
+
 def is_item_in_module(module, item):
     return module is not None and "module" in module and item in module["module"]
 
@@ -84,6 +111,14 @@ class Module:
 
         self._preInst = get_module_item(self._manifest, "preInstallScripts")
         self._postInst = get_module_item(self._manifest, "postInstallScripts")
+
+        self._instArtifact = InstallArtifact(get_module_item(self._manifest, "installArtifact"))
+
+        modDeps = get_module_item(self._manifest, "moduleDependencies")
+        if modDeps is not None:
+            self._moduleDependencies = list(filter(lambda mod: mod.name() in modDeps, get_modules()))
+        else:
+            self._moduleDependencies = []
 
     def is_valid(self):
         return self._manifest is not None and manifest_is_valid(self._manifest)
@@ -115,7 +150,16 @@ class Module:
             print("Module is not valid")
             return False
 
+        for mod in self._moduleDependencies:
+            mod.do_install()
+
         print("Installing module {}...".format(self.name()))
+
+        if self._instArtifact.is_present():
+            print("Install artifact {} exists".format(self._instArtifact.name()))
+            user_input = input("Install anyway? (yes/no[default]): ").lower()
+            is_affirm = user_input == "yes" or user_input == "y"
+            if not is_affirm: return True
 
         for cmd in self.preInstallScripts():
             subprocess.run([str(self._path / cmd)])

@@ -2,10 +2,11 @@
 	"module": {
 		"name": "terminal",
 		"items": [ 
-			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" }
+			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" },
+			{ "src": ".zshrc", "dst": "~/.zshrc", "install_type": "copy" }
 		],
-		"dependencies": [ "tmux", "zsh" ],
-		"preInstallScripts": [],
+		"dependencies": [ "bash", "tmux", "zsh" ],
+		"preInstallScripts": [ "install_nvm.sh" ],
 		"postInstallScripts": [ "setup_zsh.sh" ]
 	}
 }

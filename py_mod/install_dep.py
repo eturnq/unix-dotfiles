@@ -91,9 +91,11 @@ def install_archive(source, target):
 pkg_name = {
     "apt-get": {
         "command": "sudo {} install -y {}",
+        "bash": "bash",
         "bash-completion": "bash-completion",
         "build-essential": "build-essential",
         "cmake": "cmake",
+        "curl": "curl",
         "fvwm": "fvwm3",
         "git": "git",
         "tmux": "tmux",
@@ -107,9 +109,11 @@ pkg_name = {
     },
     "xbps-install": {
         "command": "sudo {} -y {}",
+        "bash": "bash",
         "bash-completion": "bash-completion",
         "build-essential": "automake gcc gettext make",
         "cmake": "cmake",
+        "curl": "curl",
         "fvwm": "fvwm3",
         "git": "git",
         "tmux": "tmux",
