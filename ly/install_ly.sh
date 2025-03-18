@@ -6,7 +6,7 @@ if [ $PKG -eq "apt-get" ] ; then
 	INITSVC=""
 elif [ $PKG -eq "xbps-install" ] ; then
 	INITSRV="-DINIT_SYSTEM=runit"
-else ;
+else
 	INITSRV=""
 fi
 
