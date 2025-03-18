@@ -7,10 +7,6 @@ pushd /tmp
 popd
 
 mkdir -p $(HOME)/.fonts
-pushd $(HOME)/.fonts
-	unzip /tmp/Noto.zip
-popd
-
+unzip /tmp/Noto.zip -d $(HOME)/.fonts
 rm /tmp/Noto.zip
-
 fc-cache

@@ -98,6 +98,7 @@ pkg_name = {
         "curl": "curl",
         "fvwm": "fvwm3",
         "git": "git",
+        "tar": "tar",
         "tmux": "tmux",
         "unzip": "unzip",
         "wget": "wget",
@@ -105,10 +106,11 @@ pkg_name = {
         "x11-xserver-utils": "x11-xserver-utils",
         "xinit": "xinit",
         "xterm": "xterm",
+        "xz": "xz-utils",
         "zsh": "zsh"
     },
     "xbps-install": {
-        "command": "sudo {} -y {}",
+        "command": "sudo {} -Sy {}",
         "bash": "bash",
         "bash-completion": "bash-completion",
         "build-essential": "automake gcc gettext make",
@@ -116,6 +118,7 @@ pkg_name = {
         "curl": "curl",
         "fvwm": "fvwm3",
         "git": "git",
+        "tar": "tar",
         "tmux": "tmux",
         "unzip": "unzip",
         "wget": "wget",
@@ -123,6 +126,7 @@ pkg_name = {
         "x11-xserver-utils": "xorg xrdb",
         "xinit": "xinit",
         "xterm": "xterm",
+        "xz": "xz",
         "zsh": "zsh"
     }
 }

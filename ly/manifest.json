@@ -1,0 +1,9 @@
+{
+	"module": {
+		"name": "ly",
+		"items": [],
+		"dependencies": [ "git" ],
+		"moduleDependencies": [ "zig" ],
+		"postInstallScripts": [ "install_ly.sh" ]
+	}
+}

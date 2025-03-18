@@ -1,0 +1,9 @@
+{
+	"module": {
+		"name": "zig",
+		"items": [],
+		"dependencies": [ "tar", "wget", "xz" ],
+		"postInstallScripts": [ "install_zig.sh" ],
+		"installArtifact": { "name": "~/.local/bin/zig", "type": "file" }
+	}
+}
