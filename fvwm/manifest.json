@@ -6,6 +6,7 @@
 			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
 		],
 		"dependencies": [ "bash-completion", "fvwm", "unzip", "wget", "wpagui", "x11-xserver-utils", "xinit", "xterm" ],
-		"postInstallScripts": [ "setup.sh" ]
+		"postInstallScripts": [ "setup.sh" ],
+		"installArtifact": { "name": "fvwm3", "type": "path" }
 	}
 }

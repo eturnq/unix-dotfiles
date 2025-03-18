@@ -3,6 +3,7 @@
 		"name": "nvm",
 		"items": [],
 		"dependencies": [ "bash", "curl" ],
-		"postInstallScripts": [ "install_nvm.sh" ]
+		"postInstallScripts": [ "install_nvm.sh" ],
+		"installArtifact": { "name": "nvm", "type": "path" }
 	}
 }
