@@ -104,6 +104,22 @@ pkg_name = {
         "xinit": "xinit",
         "xterm": "xterm",
         "zsh": "zsh"
+    },
+    "xbps-install": {
+        "command": "sudo {} -y {}",
+        "bash-completion": "bash-completion",
+        "build-essential": "automake gcc gettext make",
+        "cmake": "cmake",
+        "fvwm": "fvwm3",
+        "git": "git",
+        "tmux": "tmux",
+        "unzip": "unzip",
+        "wget": "wget",
+        "wpagui": "wpa_gui",
+        "x11-xserver-utils": "xorg xrdb",
+        "xinit": "xinit",
+        "xterm": "xterm",
+        "zsh": "zsh"
     }
 }
 
