@@ -102,7 +102,7 @@ def get_module_item(module, item):
     return module["module"][item] if is_item_in_module(module, item) else None
 
 class Module:
-    def __init__(self, path: FsItem):
+    def __init__(self, path: FsItem, dependencies=True):
         self._manifest = read_manifest_file(path / "manifest.json")
         self._path = path
 
@@ -114,9 +114,11 @@ class Module:
 
         self._instArtifact = InstallArtifact(get_module_item(self._manifest, "installArtifact"))
 
+        ## !!!!! DO NOT create circular dependencies !!!!!
+        ## Module dependencies should only be 1 module deep
         modDeps = get_module_item(self._manifest, "moduleDependencies")
-        if modDeps is not None:
-            self._moduleDependencies = list(filter(lambda mod: mod.name() in modDeps, get_modules()))
+        if modDeps is not None and dependencies:
+            self._moduleDependencies = list(filter(lambda mod: mod.name() in modDeps, get_modules(False)))
         else:
             self._moduleDependencies = []
 
@@ -177,8 +179,8 @@ class Module:
 
         return True
     
-def get_modules():
+def get_modules(dependencies=True):
     thisdir = FsItem(".").resolve().iterdir()
     childdirs = [child for child in thisdir if child.is_dir()]
-    raw_modules = [Module(child) for child in childdirs]
+    raw_modules = [Module(child, dependencies) for child in childdirs]
     return [child for child in raw_modules if child.is_valid()]

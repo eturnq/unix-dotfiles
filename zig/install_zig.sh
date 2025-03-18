@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
 ZIG_URL=https://ziglang.org/download
 ZIG_VERSION=0.14.0
-ZIG_FILENAME=zig-linux-x86_64-$ZIG_VERISON
-ZIG_ARCHIVE=$ZIG_FILENAEM.tar.xz
+ZIG_FILENAME=zig-linux-x86_64-$ZIG_VERSION
+ZIG_ARCHIVE=$ZIG_FILENAME.tar.xz
 
 mkdir -p $HOME/.local/{bin,share}
 pushd $HOME/.local/share
