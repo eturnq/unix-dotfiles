@@ -2,7 +2,7 @@
 	"module": {
 		"name": "ly",
 		"items": [],
-		"dependencies": [ "bash", "git" ],
+		"dependencies": [ "bash", "git", "pam" ],
 		"moduleDependencies": [ "zig" ],
 		"postInstallScripts": [ "install_ly.sh" ]
 	}
