@@ -125,7 +125,7 @@ pkg_name = {
 
 def get_package_manager():
     supported = list(pkg_name.keys())
-    return next(filter(lambda pkg: exe_in_path(pkg), supported), None)
+    return next(filter(lambda pkg: exe_in_path(pkg).success, supported), None)
 
 def install_package(names):
     pkgmgr = get_package_manager()
