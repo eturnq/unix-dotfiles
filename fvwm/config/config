@@ -326,15 +326,15 @@ MenuStyle * Font "xft:Sans:Italic:size=8:antialias=True"
 # window or using alt-f1 (or menu).
 DestroyMenu MenuFvwmRoot
 AddToMenu   MenuFvwmRoot "Fvwm" Title
-+ "$[gt.&Programs]%icons/programs.png%" Popup MenuPrograms
-+ "$[gt.XDG &Menu]%icons/apps.png%"     Popup XDGMenu
-+ "&XTerm%icons/terminal.png%"          Exec exec $[infostore.terminal]
++ "$[gt.&Programs]" Popup MenuPrograms
++ "$[gt.XDG &Menu]"     Popup XDGMenu
++ "&Terminal"          Exec exec $[infostore.terminal]
 Test (x $[infostore.runcmd]) + "R&un Command%icons/run_arrow.png%" Exec exec $[infostore.runcmd] $[infostore.runcmdopt]
 + "" Nop
-+ "Fvwm&Console%icons/terminal.png%"       Module FvwmConsole -terminal $[infostore.terminal]
+#+ "Fvwm&Console%icons/terminal.png%"       Module FvwmConsole -terminal $[infostore.terminal]
 + "$[gt.&Wallpapers]%icons/wallpaper.png%" Popup BGMenu
 + "$[gt.M&an Pages]%icons/help.png%"       Popup MenuFvwmManPages
-+ "$[gt.Cop&y Config]%icons/conf.png%"     FvwmScript FvwmScript-ConfirmCopyConfig
+#+ "$[gt.Cop&y Config]%icons/conf.png%"     FvwmScript FvwmScript-ConfirmCopyConfig
 + "" Nop
 + "$[gt.Re&fresh]%icons/refresh.png%" Refresh
 + "$[gt.&Restart]%icons/restart.png%" Restart
