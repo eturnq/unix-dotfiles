@@ -1,6 +1,10 @@
 #!/bin/bash
 # Put universal startup things here
 
+#killall nm-applet
+#nm-applet 2>&1 > /dev/null &
+#stalonetray -geometry 10x1 2>&1 > /dev/null &
+
 # Put user start things in the $FVWM_USERDIR/startup directory
 for file in $FVWM_USERDIR/startup/*; do
 	$file;

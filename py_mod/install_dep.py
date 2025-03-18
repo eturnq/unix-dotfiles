@@ -99,6 +99,7 @@ pkg_name = {
         "tmux": "tmux",
         "unzip": "unzip",
         "wget": "wget",
+        "wpagui": "wpagui",
         "x11-xserver-utils": "x11-xserver-utils",
         "xinit": "xinit",
         "xterm": "xterm",
