@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-USER = $(id -un)
+USER=$(id -un)
 
 sudo mkdir -p /usr/src/ly
 sudo chown $USER:$USER /usr/src/ly
