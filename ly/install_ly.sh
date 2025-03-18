@@ -7,7 +7,7 @@ PKG=$(python3 -c "from py_mod.install_dep import get_package_manager ; print(get
 if [ $PKG = "apt-get" ] ; then
 	INITSVC=""
 elif [ $PKG = "xbps-install" ] ; then
-	INITSVC="-DINIT_SYSTEM=runit"
+	INITSVC="-Dinit_system=runit"
 else
 	INITSVC=""
 fi
