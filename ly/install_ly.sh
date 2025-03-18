@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USER=$(id -un)
-PKG=$(python3 -c "from py_mod/install_dep import get_package_manager ; print(get_package_manager())")
+PKG=$(python3 -c "from py_mod.install_dep import get_package_manager ; print(get_package_manager())")
 if [ $PKG -eq "apt-get" ] ; then
 	INITSVC=""
 elif [ $PKG -eq "xbps-install" ] ; then
