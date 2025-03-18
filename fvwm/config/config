@@ -84,6 +84,9 @@ AddToFunc   StartFunction
 + I Test (Init) InitBackground
 + I Module FvwmPager *
 + I Module FvwmEvent EventNewDesk
++ I Test (d $[FVWM_USERDIR]/startup)\
+		Exec exec for file in $(ls $[FVWM_USERDIR]/startup); do \
+			$[FVWM_USERDIR]/startup/$file; done
 
 # Function to set background when fvwm starts
 DestroyFunc InitBackground
