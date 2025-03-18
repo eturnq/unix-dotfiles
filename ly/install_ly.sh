@@ -7,6 +7,7 @@ sudo chown $USER:$USER /usr/src/ly
 git clone https://codeberg.org/AnErrupTion/ly /usr/src/ly
 
 pushd /usr/src/ly
+	git pull
 	$HOME/.local/bin/zig build
 	sudo $HOME/.local/bin/zig build installexe
 popd

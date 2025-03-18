@@ -7,7 +7,6 @@ from py_mod.install_module import get_modules
 
 def main():
     args = parseargs()
-    print(args)
 
     if args.command == "install":
         install_modules(args.modules)
@@ -15,7 +14,7 @@ def main():
         print("Invalid command.")
 
 def parseargs():
-    parser = argparse.ArgumentParser(prog="install_module", description="Install modules from this repo.")
+    parser = argparse.ArgumentParser(prog="mod", description="Install modules from this repo.")
     parser.add_argument("command", action="store")
     parser.add_argument("modules", action="store", nargs="+")
     return parser.parse_args(sys.argv[1:])

@@ -4,6 +4,7 @@
 		"items": [],
 		"dependencies": [ "bash", "git", "pam", "xcb" ],
 		"moduleDependencies": [ "zig" ],
-		"postInstallScripts": [ "install_ly.sh" ]
+		"postInstallScripts": [ "install_ly.sh" ],
+		"installArtifact": { "name": "ly", "type": "path" }
 	}
 }
