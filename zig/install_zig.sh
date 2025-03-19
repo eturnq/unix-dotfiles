@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ZIG_URL=https://ziglang.org/download
 ZIG_VERSION=0.14.0

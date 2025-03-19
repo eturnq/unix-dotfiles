@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which xterm) 20
 

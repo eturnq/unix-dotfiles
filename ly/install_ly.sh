@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 USER=$(id -un)
 SRCDIR=/usr/src/ly
