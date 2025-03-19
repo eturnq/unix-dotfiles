@@ -130,6 +130,7 @@ pkg_name = {
         "tar": "tar",
         "tmux": "tmux",
         "unzip": "unzip",
+        "wget": "wget",
         "wpagui": "",
         "x11-xserver-utils": "xorg xorg-xrdb",
         "xcb": "libxcb",
