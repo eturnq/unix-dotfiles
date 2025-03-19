@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 if [ -f /usr/bin/update-alternatives ]; then
-	/usr/bin/update-alternatives $@
+	sudo /usr/bin/update-alternatives $@
 	exit $?
 fi
 
 if [ $1 = "--install" ]; then
-	ln -s $2 $4
+	sudo ln -s $2 $4
 else
 	echo "Invalid command"
 	exit 1
