@@ -118,7 +118,7 @@ pkg_name = {
         "command": "sudo {} install -y {}",
         "bash": "bash",
         "bash-completion": "bash-completion",
-        "build-essential": "automake gcc gettext gmake",
+        "build-essential": "automake gcc gmake",
         "cmake": "cmake",
         "curl": "curl",
         "dunst": "dunst",
