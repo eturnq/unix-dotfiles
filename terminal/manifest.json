@@ -6,7 +6,7 @@
 			{ "src": ".zshrc", "dst": "~/.zshrc", "install_type": "copy" }
 		],
 		"dependencies": [ "bash", "tmux", "zsh" ],
-		"preInstallScripts": [ "install_nvm.sh" ],
+		"moduleDependencies": [ "nvm" ],
 		"postInstallScripts": [ "setup_zsh.sh" ],
 		"installArtifact": { "name": "~/.zshrc", "type": "file" }
 	}
