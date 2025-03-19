@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+type -p update-alternatives && update-alternatives $@ ; exit $?
+
+if [ $1 = "install" ]; then
+	ln -s $2 $4
+else
+	echo "Invalid command"
+	exit 1
+fi
+

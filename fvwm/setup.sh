@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+PATH=$PATH:/$HOME/.local/bin
 sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which xterm) 20
 
 pushd /tmp
