@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-type -p update-alternatives && update-alternatives $@ ; exit $?
+if [ -f /usr/bin/update-alternatives ]; then
+	/usr/bin/update-alternatives $@
+	exit $?
+fi
 
 if [ $1 = "install" ]; then
 	ln -s $2 $4
