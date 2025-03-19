@@ -4,8 +4,10 @@
 		"items": [
 			{ "src": "config", "dst": "~/.fvwm", "install_type": "link" },
 			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
+			{ "src": "dunstrc", "dst": "~/.config/dunst/dunstrc", "install_type": "copy" }
 		],
-		"dependencies": [ "bash-completion", "fvwm", "unzip", "wget", "wpagui", "x11-xserver-utils", "xinit", "xterm" ],
+		"dependencies": [ "bash-completion", "dunst", "fvwm", "libnotify", "unzip", "wget", 
+			"wpagui", "x11-xserver-utils", "xinit", "xterm" ],
 		"postInstallScripts": [ "setup.sh" ],
 		"installArtifact": { "name": "fvwm3", "type": "path" }
 	}
