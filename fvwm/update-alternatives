@@ -5,7 +5,7 @@ if [ -f /usr/bin/update-alternatives ]; then
 	exit $?
 fi
 
-if [ $1 = "install" ]; then
+if [ $1 = "--install" ]; then
 	ln -s $2 $4
 else
 	echo "Invalid command"

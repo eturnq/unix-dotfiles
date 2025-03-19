@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo env PATH=$PATH:/$HOME/.local/bin -S update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which xterm) 20
+sudo env -S PATH=$PATH:/$HOME/.local/bin update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator $(which xterm) 20
 
 pushd /tmp
 	wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/Noto.zip
