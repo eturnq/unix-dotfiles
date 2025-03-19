@@ -2,7 +2,7 @@
 	"module": {
 		"name": "nvm",
 		"items": [],
-		"dependencies": [ "bash", "curl" ],
+		"dependencies": [ "bash", "build-essential", "curl" ],
 		"postInstallScripts": [ "install_nvm.sh" ],
 		"installArtifact": { "name": "nvm", "type": "path" }
 	}
