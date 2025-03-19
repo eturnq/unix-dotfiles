@@ -133,7 +133,7 @@ pkg_name = {
         "wpagui": "",
         "x11-xserver-utils": "xorg xorg-xrdb",
         "xcb": "libxcb",
-        "xinit": "xinit",
+        "xinit": "xorg-xinit",
         "xterm": "xterm",
         "xz": "xz",
         "zsh": "zsh"

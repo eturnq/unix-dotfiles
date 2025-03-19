@@ -3,7 +3,7 @@
 		"name": "fvwm",
 		"items": [
 			{ "src": "config", "dst": "~/.fvwm", "install_type": "link" },
-			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" }
+			{ "src": ".Xresources", "dst": "~/.Xresources", "install_type": "copy" },
 			{ "src": "dunstrc", "dst": "~/.config/dunst/dunstrc", "install_type": "copy" }
 		],
 		"dependencies": [ "bash-completion", "dunst", "fvwm", "libnotify", "unzip", "wget", 
