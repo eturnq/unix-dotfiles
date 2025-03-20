@@ -6,7 +6,7 @@ if [ -f /usr/bin/update-alternatives ]; then
 fi
 
 if [ $1 = "--install" ]; then
-	sudo ln -s $2 $4
+	sudo ln -s $4 $2
 else
 	echo "Invalid command"
 	exit 1
