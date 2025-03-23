@@ -2,6 +2,7 @@
 # Put universal startup things here
 
 dunst &
+xclock -geometry -0+0 &
 
 #killall nm-applet
 #nm-applet 2>&1 > /dev/null &

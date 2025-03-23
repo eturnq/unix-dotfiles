@@ -32,7 +32,11 @@
 # that FvwmConsole uses. Change this to your terminal of choice
 InfoStoreAdd terminal x-terminal-emulator
 InfoStoreAdd filebrowser rox-filer
-PipeRead "printf \"InfoStoreAdd menudesktop '$([[ $(type -p fvwm3-menu-desktop) ]] && echo fvwm3-menu-desktop || echo fvwm-menu-desktop)'\""
+PipeRead "printf \"InfoStoreAdd fvwmpre '$([[ $(type -p fvwm3-root) ]] && echo fvwm3 || echo fvwm)'\""
+InfoStoreAdd fvwm3root "$[infostore.fvwmpre]-root"
+InfoStoreAdd fvwm3menudesktop "$[infostore.fvwmpre]-menu-desktop"
+InfoStoreAdd fvwm3menudirectory "$[infostore.fvwmpre]-menu-desktop"
+InfoStoreAdd fvwm3menuxlock "$[infostore.fvwmpre]-menu-xlock"
 
 # This is used for "Run Command" and the Meta+Space key-binding.
 # runcmd is the binary name and runcmdopt contains additional
@@ -342,7 +346,7 @@ Test (x $[infostore.runcmd]) + "R&un Command%icons/run_arrow.png%" Exec exec $[i
 + "$[gt.&Quit]%icons/quit.png%"       Module FvwmScript FvwmScript-ConfirmQuit
 
 # Generate XDGMenu
-PipeRead "$[infostore.menudesktop] -e"
+PipeRead "$[infostore.fvwm3menudesktop] -e"
 
 # Programs Menu
 #
@@ -480,10 +484,11 @@ AddToMenu   MenuFvwmManPages "Help" Title
 + "FvwmRearrange" ViewManPage Fvwm3Rearrange
 + "FvwmScript"    ViewManPage Fvwm3Script
 + "" Nop
-+ "fvwm3-root"           ViewManPage fvwm3-root
-+ "$[infostore.menudesktop]"   ViewManPage $[infostore.menudesktop]
-+ "fvwm3-menu-directory" ViewManPage fvwm3-menu-directory
-+ "fvwm3-menu-xlock"     ViewManPage fvwm3-menu-xlock
+#+ "fvwm3-root"           ViewManPage fvwm3-root
++ "$[infostore.fvwm3root]"           ViewManPage $[infostore.fvwm3root]
++ "$[infostore.fvwm3menudesktop]"   ViewManPage $[infostore.fvwm3menudesktop]
++ "$[infostore.fvwm3menudirectory]" ViewManPage $[infostore.fvwm3menudirectoy]
++ "$[infostore.fvwm3menuxlock]"     ViewManPage $[infostore.fvwm3menuxlock]
 
 #######
 # 5: Mouse and Key bindings
