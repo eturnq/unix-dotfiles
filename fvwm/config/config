@@ -32,6 +32,7 @@
 # that FvwmConsole uses. Change this to your terminal of choice
 InfoStoreAdd terminal x-terminal-emulator
 InfoStoreAdd filebrowser rox-filer
+PipeRead "printf \"InfoStoreAdd menudesktop '$([[ $(type -p fvwm3-menu-desktop) ]] && echo fvwm3-menu-desktop || echo fvwm-menu-desktop)'\""
 
 # This is used for "Run Command" and the Meta+Space key-binding.
 # runcmd is the binary name and runcmdopt contains additional
@@ -341,7 +342,7 @@ Test (x $[infostore.runcmd]) + "R&un Command%icons/run_arrow.png%" Exec exec $[i
 + "$[gt.&Quit]%icons/quit.png%"       Module FvwmScript FvwmScript-ConfirmQuit
 
 # Generate XDGMenu
-PipeRead "$[FVWM_USERDIR]/scripts/get_desktop_menu.sh -e"
+PipeRead "$[infostore.menudesktop] -e"
 
 # Programs Menu
 #
@@ -480,7 +481,7 @@ AddToMenu   MenuFvwmManPages "Help" Title
 + "FvwmScript"    ViewManPage Fvwm3Script
 + "" Nop
 + "fvwm3-root"           ViewManPage fvwm3-root
-+ "fvwm3-menu-desktop"   ViewManPage fvwm3-menu-desktop
++ "$[infostore.menudesktop]"   ViewManPage $[infostore.menudesktop]
 + "fvwm3-menu-directory" ViewManPage fvwm3-menu-directory
 + "fvwm3-menu-xlock"     ViewManPage fvwm3-menu-xlock
 
