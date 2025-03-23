@@ -177,7 +177,7 @@ pkg_name = {
         "cmake": "cmake",
         "curl": "curl",
         "dunst": "dunst",
-        "fvwm": "fvwm3",
+        "fvwm": "fvwm3 lxmenu-data",
         "git": "git",
         "libnotify": "libnotify",
         "lightdm": "lightdm",
