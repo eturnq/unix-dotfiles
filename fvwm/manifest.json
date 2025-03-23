@@ -7,7 +7,7 @@
 			{ "src": "dunstrc", "dst": "~/.config/dunst/dunstrc", "install_type": "copy" },
 			{ "src": "update-alternatives", "dst": "~/.local/bin/update-alternatives", "install_type": "copy" }
 		],
-		"dependencies": [ "bash-completion", "dunst", "fvwm", "libnotify", "python3", 
+		"dependencies": [ "bash-completion", "dunst", "fvwm", "libnotify", "python3", "rofi", 
 			"unzip", "wget", "wpagui", "x11-xserver-utils", "xinit", "xterm" ],
 		"postInstallScripts": [ "setup.sh" ],
 		"installArtifact": { "name": "fvwm3", "type": "path" }
