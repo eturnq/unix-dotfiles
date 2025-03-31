@@ -161,6 +161,7 @@ pkg_name = {
         "tar": "gtar",
         "tmux": "tmux",
         "unzip": "unzip",
+        "wget": "wget",
         "wpagui": "wpa_supplicant_gui",
         "x11-xserver-utils": "xorg xorg-apps",
         "xcb": "xcb libxcb",
