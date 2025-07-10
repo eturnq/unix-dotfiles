@@ -210,7 +210,8 @@ MoveThreshold 3
 
 # Sets the focus style to SloppyFocus and a mouse click
 # in a window will Raise it.
-Style * SloppyFocus, MouseFocusClickRaises
+#Style * SloppyFocus, MouseFocusClickRaises
+Style * ClickToFocus, MouseFocusClickRaises
 
 # Default Font
 DefaultFont "xft:Sans:Bold:Italic:size=10:antialias=True"
