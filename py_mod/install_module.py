@@ -122,6 +122,13 @@ class Module:
         else:
             self._moduleDependencies = []
 
+    def __str__(self):
+        open_p = "{"
+        close_p = "}"
+        items = f"\tpath: {self.path()},\n\tname: {self.name()}"
+        body = f"{items}"
+        return f"Module {open_p}\n{body}\n{close_p}"
+
     def is_valid(self):
         return self._manifest is not None and manifest_is_valid(self._manifest)
 

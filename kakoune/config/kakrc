@@ -1,0 +1,56 @@
+colorscheme one-dark
+
+set-option -add global ui_options terminal_assistant=none
+add-highlighter /global number-lines
+
+evaluate-commands %sh{
+        plugins="$kak_config/plugins"
+            mkdir -p "$plugins"
+                [ ! -e "$plugins/plug.kak" ] && \
+                        git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
+                            printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
+}
+plug "andreyorst/plug.kak" noload
+ 
+plug "kak-lsp/kak-lsp" do %{
+	cargo install --locked --force --path .
+	kak -e 'exec %{!kak-lsp<ret>/hook -group lsp-filetype<ret>vt}'
+}
+
+lsp-enable
+lsp-auto-hover-enable
+lsp-inlay-hints-enable global
+
+hook global WinSetOption filetype=c %{
+	hook window -group semantic-tokens BufReload .* lsp-semantic-tokens
+	hook window -group semantic-tokens NormalIdle .* lsp-semantic-tokens
+	hook window -group semantic-tokens InsertIdle .* lsp-semantic-tokens
+	hook -once -always window WinSetOption filetype=.* %{
+		remove-hooks window semantic-tokens
+	}
+}
+
+set-option global lsp_semantic_tokens %{
+	[
+		{face="const_variable_declaration", token="variable", modifiers=["constant", "declaration"]},
+		{face="const_variable", token="variable", modifiers=["constant"]},
+		{face="variable", token="variable"},
+		{face="keyword", token="modifier"},
+
+		{face="arguement", token="parameter", modifiers=["declaration"]},
+		{face="attribute", token="property", modifiers=[]},
+		{face="type", token="class", modifiers=[]},
+		{face="builtin", token="label"},
+	]
+}
+
+map global user l ':enter-user-mode lsp<ret>' -docstring 'LSP mode'
+map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Select next snippet placeholder'
+
+map global object a '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
+map global object <a-a> '<a-semicolon>lsp-object<ret>' -docstring 'LSP any symbol'
+map global object f '<a-semicolon>lsp-object Function Method<ret>' -docstring 'LSP function or method'
+map global object t '<a-semicolon>lsp-object Class Interface Struct<ret>' -docstring 'LSP class interface or struct'
+map global object d '<a-semicolon>lsp-diagnostic-object --include-warnings<ret>' -docstring 'LSP errors and warnings'
+map global object D '<a-semicolon>lsp-diagnostic-object<ret>' -docstring 'LSP errors'
+

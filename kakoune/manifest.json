@@ -1,0 +1,11 @@
+{
+	"module": {
+		"name": "kakoune",
+		"items": [
+			{ "src": "config", "dst": "~/.config/kak", "install_type": "copy" }
+		],
+		"dependencies": [ "kakoune", "git" ],
+		"moduleDependencies": [ "rust", "terminal" ],
+		"installArtifact": { "name": "kak", "type": "path" }
+	}
+}

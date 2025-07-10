@@ -1,0 +1,9 @@
+{
+	"module": {
+		"name": "rust",
+		"items": [],
+		"dependencies": [ "curl" ],
+		"postInstallScripts": [ "install_rust.sh" ],
+		"installArtifact": { "name": "cargo", "type": "path" }
+	}
+}
