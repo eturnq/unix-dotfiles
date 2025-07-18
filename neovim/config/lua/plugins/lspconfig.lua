@@ -24,5 +24,9 @@ return {
 				capabilities = capabilities
 			}
 		end
+	},
+
+	{
+		"simrat39/rust-tools.nvim"
 	}
 }

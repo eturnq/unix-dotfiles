@@ -87,6 +87,7 @@ DesktopConfiguration global
 DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Test (Init) InitBackground
++ I Module FvwmButtons XClock
 + I Module FvwmPager *
 + I Module FvwmEvent EventNewDesk
 + I Exec exec env $[FVWM_USERDIR]/autostart
@@ -297,6 +298,7 @@ Style "FvwmPager" !Title, !Handles, !Borders, !Maximizable, \
 #      10 - Module Default
 #      11 - Module Hilight
 #      12 - Module ActiveButton (Mouse Hover)
+
 #      13 - FvwmPager Active Page
 #      14 - FvwmIconMan Iconified Button
 ###########
@@ -641,26 +643,35 @@ DestroyModuleConfig FvwmScript:*
 # and Desks. This is setup to show only the Pages on the current Desk.
 DestroyModuleConfig FvwmPager:*
 	*FvwmPager: Geometry 160x90-3-3
+	*FvwmPager: WindowColorsets 3 10
+	*FvwmPager: Font "xft:NotoMono\ Nerd\ Font:size=10:antialias=True"
 	*FvwmPager: Colorset * 9
 	*FvwmPager: HilightColorset * 9
 	*FvwmPager: BalloonColorset * 9
 	*FvwmPager: BalloonBorderWidth 1
 	*FvwmPager: BalloonStringFormat %i
-	*FvwmPager: WindowColorsets 3 10
+	*FvwmPager: BalloonFont "xft:NotoMono\ Nerd\ Font:size=9:antialias=True"
 	*FvwmPager: Balloons All
 	*FvwmPager: BalloonYOffset -2
 	*FvwmPager: UseSkipList
 	*FvwmPager: Rows 1
 
+DestroyModuleConfig FvwmButtons:*
+	*XClock: Geometry 154x154-0+1
+	*XClock: Frame 0
+	*XClock: (Swallow FvwmClock "Exec exec xclock -name FvwmClock")
+
+Style *XClock NoTitle, NoHandles, Sticky, FixedSize
+
 # FvwmIconMan
 #
 # FvwmIconMan is a powerful tool to list and manage windows. This
 # is used as the window list in the panel or taskbar.
-##DestroyModuleConfig FvwmIconMan:*
-##*FvwmIconMan: UseWinList true
-###*FvwmIconMan: ButtonGeometry 120x20
+DestroyModuleConfig FvwmIconMan:*
+*FvwmIconMan: UseWinList true
+*FvwmIconMan: ButtonGeometry 120x20
 ##*FvwmIconMan: ButtonGeometry 64x64 
-##*FvwmIconMan: ManagerGeometry 0x1
+*FvwmIconMan: ManagerGeometry 0x1
 ###*FvwmIconMan: ManagerGeometry 1x0
 ##*FvwmIconMan: Colorset 10
 ##*FvwmIconMan: FocusColorset 11
