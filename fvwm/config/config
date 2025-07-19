@@ -88,6 +88,8 @@ DestroyFunc StartFunction
 AddToFunc   StartFunction
 + I Test (Init) InitBackground
 + I Module FvwmButtons XClock
++ I Module FvwmButtons Taskbar
+#+ I Module FvwmIconMan
 + I Module FvwmPager *
 + I Module FvwmEvent EventNewDesk
 + I Exec exec env $[FVWM_USERDIR]/autostart
@@ -150,10 +152,10 @@ AddToFunc   SetBG
 # This function is run from FvwmIconMan when the button is clicked.
 DestroyFunc IconManClick
 AddToFunc   IconManClick
-+ I ThisWindow (Raised, !Shaded, !Iconic, CurrentPage, AnyScreen) Iconify
++ I ThisWindow (Raised, !Shaded, !Iconic, CurrentPage, AnyScreen) # Iconify
 + I TestRc (Match) Break
 + I ThisWindow WindowShade off
-#+ I ThisWindow Iconify off
++ I ThisWindow Iconify off
 + I ThisWindow Raise
 + I ThisWindow (AcceptsFocus) FlipFocus
 
@@ -262,11 +264,12 @@ Style * Colorset1, HilightColorset 2, \
 Style ConfirmQuit !Title, PositionPlacement Center, WindowListSkip, Layer 6
 Style FvwmIdent WindowListSkip
 
-Style * IconBox 48x762+3+3, IconFill Left Top, IconGrid 10, 10 \
-	IconTitleFormat %i, IconTitleRelief, IconBackgroundRelief 1, \
-	IconBackgroundPadding 0, IconSize -1 -1, IconTitleColorset 6, \
-	IconBackgroundColorset 6, HilightIconTitleColorset 8, \
-		IconFill top bottom
+Style * IconBox -162 172 -1 -120, IconFile Right -120 
+#       IconBox 48x762+3+3 #, IconFill Left Top, IconGrid 10, 10 \
+#	IconTitleFormat %i, IconTitleRelief, IconBackgroundRelief 1, \
+#	IconBackgroundPadding 0, IconSize -1 -1, IconTitleColorset 6, \
+#	IconBackgroundColorset 6, HilightIconTitleColorset 8, \
+#		IconFill top bottom
 
 Style * StickyIcon, !StickStippledIconTitle
 
@@ -657,38 +660,40 @@ DestroyModuleConfig FvwmPager:*
 	*FvwmPager: Rows 1
 
 DestroyModuleConfig FvwmButtons:*
-	*XClock: Geometry 154x154-0+1
+	*XClock: Geometry 160x160-0+0
 	*XClock: Frame 0
 	*XClock: (Swallow FvwmClock "Exec exec xclock -name FvwmClock")
-
 Style *XClock NoTitle, NoHandles, Sticky, FixedSize
+
+Style *FvwmIconMan NoTitle, NoHandles, Sticky
+
 
 # FvwmIconMan
 #
 # FvwmIconMan is a powerful tool to list and manage windows. This
 # is used as the window list in the panel or taskbar.
 DestroyModuleConfig FvwmIconMan:*
-*FvwmIconMan: UseWinList true
-*FvwmIconMan: ButtonGeometry 120x20
-##*FvwmIconMan: ButtonGeometry 64x64 
-*FvwmIconMan: ManagerGeometry 0x1
-###*FvwmIconMan: ManagerGeometry 1x0
-##*FvwmIconMan: Colorset 10
-##*FvwmIconMan: FocusColorset 11
-##*FvwmIconMan: IconColorset 14
-##*FvwmIconMan: FocusAndSelectColorset 12
-##*FvwmIconMan: SelectColorset 12
-##*FvwmIconMan: IconAndSelectColorset 12
-##*FvwmIconMan: DrawIcons always
-##*FvwmIconMan: ReliefThickness 0
-##*FvwmIconMan: Format "%t"
-##*FvwmIconMan: Font "xft:Sans:Bold:size=8:antialias=True"
-##*FvwmIconMan: Action Mouse 0 A ret
-##*FvwmIconMan: Action Mouse 1 A sendcommand IconManClick
-##*FvwmIconMan: Action Mouse 3 A sendcommand "Menu MenuIconOps"
-##*FvwmIconMan: Resolution global
-##*FvwmIconMan: Tips needed
-##*FvwmIconMan: Sort id
+##*FvwmIconMan: UseWinList true
+*FvwmIconMan: ButtonGeometry 160x30
+#*FvwmIconMan: ButtonGeometry 64x64 
+*FvwmIconMan: ManagerGeometry 1x0
+##*FvwmIconMan: Format "%i%t"
+*FvwmIconMan: DrawIcons always
+*FvwmIconMan: Font "xft:NotoSans\ Nerd\ Font:size=8:antialias=True"
+#*FvwmIconMan: Colorset 10
+#*FvwmIconMan: FocusColorset 11
+#*FvwmIconMan: IconColorset 14
+#*FvwmIconMan: FocusAndSelectColorset 12
+#*FvwmIconMan: SelectColorset 12
+#*FvwmIconMan: IconAndSelectColorset 12
+#*FvwmIconMan: ReliefThickness 0
+#*FvwmIconMan: Font "xft:Sans:Bold:size=8:antialias=True"
+#*FvwmIconMan: Action Mouse 0 A ret
+#*FvwmIconMan: Action Mouse 1 A sendcommand IconManClick
+#*FvwmIconMan: Action Mouse 3 A sendcommand "Menu MenuIconOps"
+#*FvwmIconMan: Resolution global
+#*FvwmIconMan: Tips needed
+#*FvwmIconMan: Sort id
 ##
 # FvwmEvent
 #
