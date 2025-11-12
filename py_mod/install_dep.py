@@ -186,7 +186,7 @@ pkg_name = {
         "lightdm": "",
         "kakoune": "kakoune",
         "pam": "pam",
-        "python3": "python3 py3-xdg",
+        "python3": "python py3-xdg",
         "rofi": "rofi",
         "tar": "gtar",
         "tmux": "tmux",
