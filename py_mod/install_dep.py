@@ -105,6 +105,7 @@ pkg_name = {
         "pam": "libpam0g libpam0g-dev",
         "python3": "python3",
         "rofi": "rofi",
+        "rust": "",
         "tar": "tar",
         "tmux": "tmux",
         "unzip": "unzip",
@@ -115,6 +116,7 @@ pkg_name = {
         "xinit": "xinit",
         "xterm": "xterm",
         "xz": "xz-utils",
+        "yazi": "",
         "zsh": "zsh"
     },
     "pacman": {
@@ -132,6 +134,7 @@ pkg_name = {
         "pam": "",
         "python3": "python3",
         "rofi": "rofi",
+        "rust": "",
         "tar": "tar",
         "tmux": "tmux",
         "unzip": "unzip",
@@ -142,6 +145,7 @@ pkg_name = {
         "xinit": "xorg-xinit",
         "xterm": "xterm",
         "xz": "xz",
+        "yazi": "yazi ffmpeg 7zip jq poppler fd ripgrep fzf zoxide resvg imagemagick",
         "zsh": "zsh"
     },
     "pkg": {
@@ -160,6 +164,7 @@ pkg_name = {
         "pam": "",
         "python3": "python3",
         "rofi": "rofi",
+        "rust": "rust",
         "tar": "gtar",
         "tmux": "tmux",
         "unzip": "unzip",
@@ -170,6 +175,7 @@ pkg_name = {
         "xinit": "xinit",
         "xterm": "xterm",
         "xz": "",
+        "yazi": "yazi",
         "zsh": "zsh"
     },
     "pkg_add": {
@@ -188,6 +194,7 @@ pkg_name = {
         "pam": "pam",
         "python3": "python py3-xdg",
         "rofi": "rofi",
+        "rust": "",
         "tar": "gtar",
         "tmux": "tmux",
         "unzip": "unzip",
@@ -198,6 +205,7 @@ pkg_name = {
         "xinit": "",
         "xterm": "",
         "xz": "xz",
+        "yazi": "",
         "zsh": "zsh",
     },
     "xbps-install": {
@@ -216,6 +224,7 @@ pkg_name = {
         "pam": "pam pam-devel",
         "python3": "python3 python3-xdg",
         "rofi": "rofi",
+        "rust": "",
         "tar": "tar",
         "tmux": "tmux",
         "unzip": "unzip",
@@ -226,6 +235,7 @@ pkg_name = {
         "xinit": "xinit",
         "xterm": "xterm",
         "xz": "xz",
+        "yazi": "yazi ffmpeg 7zip jq poppler fd ripgrep fzf zoxide resvg ImageMagick",
         "zsh": "zsh"
     }
 }

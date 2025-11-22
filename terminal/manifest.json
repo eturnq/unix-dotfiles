@@ -5,8 +5,8 @@
 			{ "src": ".tmux.conf", "dst": "~/.tmux.conf", "install_type": "link" },
 			{ "src": ".zshrc", "dst": "~/.zshrc", "install_type": "copy" }
 		],
-		"dependencies": [ "bash", "tmux", "zsh" ],
-		"moduleDependencies": [ "nvm" ],
+		"dependencies": [ "bash", "tmux", "yazi", "zsh" ],
+		"moduleDependencies": [ "nvm", "rust" ],
 		"postInstallScripts": [ "setup_zsh.sh" ],
 		"installArtifact": { "name": "~/.zshrc", "type": "file" }
 	}
